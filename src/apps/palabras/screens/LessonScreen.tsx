@@ -51,6 +51,9 @@ function LessonRun({ scope, onRestart }: { scope: Scope; onRestart: () => void }
   const cleanFirstTries = useRef(0);
   const missedWords = useRef(new Set<string>());
   const attempts = useRef(0);
+  // El aviso se puede seguir tocando mientras sale de pantalla: un doble toque en
+  // "Seguir" saltaría un ejercicio o, al final, se saldría de la lista.
+  const canAdvance = useRef(false);
 
   const exercise = queue[position];
   const isLastExercise = position === queue.length - 1;
@@ -76,10 +79,13 @@ function LessonRun({ scope, onRestart }: { scope: Scope; onRestart: () => void }
     const { word } = result;
     if (word) window.setTimeout(() => speak(word.en), WORD_AFTER_SFX_MS);
 
+    canAdvance.current = true;
     setFeedback({ ...result, praise: PRAISE[Math.floor(Math.random() * PRAISE.length)] });
   };
 
   const advance = () => {
+    if (!canAdvance.current) return;
+    canAdvance.current = false;
     sfx.tap();
     setFeedback(null);
 
