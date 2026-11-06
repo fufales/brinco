@@ -1,0 +1,245 @@
+:root {
+  --ink: #2b2a4c;
+  --ink-soft: #6b6a8e;
+  --paper: #fffdf7;
+  --line: #e8e4f5;
+
+  --grape: #6c4df6;
+  --grape-dark: #4c32c9;
+  --sky: #22b8f0;
+  --sky-dark: #0f8fc4;
+  --lime: #6fd64b;
+  --lime-dark: #47a82a;
+  --sun: #ffc531;
+  --sun-dark: #e09a00;
+  --coral: #ff7a59;
+  --coral-dark: #dc5533;
+  --pink: #ff5ca8;
+  --pink-dark: #d33a84;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  font-family: 'Fredoka Variable', 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+  color: var(--ink);
+  word-spacing: 0.1em;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #241a63;
+  overscroll-behavior: none;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* Marco de la app: pantalla completa en el celular, columna centrada en computadora. */
+.frame {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Botón grueso con efecto 3D: el --edge es el borde inferior que se hunde al tocar. */
+.btn {
+  --face: var(--lime);
+  --edge: var(--lime-dark);
+  --fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 12px 24px;
+  border-radius: 22px;
+  background: var(--face);
+  color: var(--fg);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  box-shadow: 0 7px 0 var(--edge);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(6px);
+  box-shadow: 0 1px 0 var(--edge);
+}
+
+.btn:disabled {
+  --face: #dfdcea;
+  --edge: #c4c0d6;
+  --fg: #8f8ca8;
+  cursor: default;
+}
+
+.btn--wide {
+  width: 100%;
+}
+
+.btn--grape {
+  --face: var(--grape);
+  --edge: var(--grape-dark);
+}
+
+.btn--sky {
+  --face: var(--sky);
+  --edge: var(--sky-dark);
+}
+
+.btn--coral {
+  --face: var(--coral);
+  --edge: var(--coral-dark);
+}
+
+.btn--sun {
+  --face: var(--sun);
+  --edge: var(--sun-dark);
+  --fg: var(--ink);
+}
+
+.btn--white {
+  --face: #fff;
+  --edge: #d9d5ec;
+  --fg: var(--ink);
+}
+
+/* Botón redondo de ícono: atrás, cerrar, ajustes, volver a oír. */
+.icon-btn {
+  --face: #fff;
+  --edge: #d9d5ec;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: var(--face);
+  box-shadow: 0 5px 0 var(--edge);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.icon-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--edge);
+}
+
+.icon-btn svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Hoja inferior reutilizable. */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: rgba(36, 26, 99, 0.55);
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 41;
+  max-height: 88%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 32px 32px 0 0;
+  overflow-y: auto;
+}
+
+.progress {
+  flex: 1;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8ee86b, var(--lime));
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.first-letter {
+  color: var(--accent, var(--coral));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
