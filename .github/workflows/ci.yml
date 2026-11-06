@@ -35,8 +35,18 @@ jobs:
           files: brinco-web.zip
 
       - name: Deploy webhook
+        env:
+          DEPLOY_TOKEN: ${{ secrets.BRINCO_DEPLOY_TOKEN }}
         run: |
-          curl -fsS -X POST "https://openclaw7987asd98.klooid.com/deploy/brinco" \
-            -H "Authorization: Bearer ${{ secrets.BRINCO_DEPLOY_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{"ref":"${{ github.ref_name }}"}'
+          REF="${{ github.ref_type }}"
+          if [ "$REF" = "tag" ]; then
+            curl -fsS -X POST "https://openclaw7987asd98.klooid.com/deploy/brinco" \
+              -H "Authorization: Bearer $DEPLOY_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "{\"ref\":\"${{ github.ref_name }}\"}"
+          else
+            curl -fsS -X POST "https://openclaw7987asd98.klooid.com/deploy/brinco" \
+              -H "Authorization: Bearer $DEPLOY_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{"ref":"latest"}'
+          fi
