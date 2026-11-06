@@ -20,6 +20,11 @@ const CHECK_MESSAGES: Record<CheckResult, string> = {
   unavailable: 'Las actualizaciones no están disponibles aquí.',
 };
 
+function displayMode(): string {
+  const modes = ['standalone', 'fullscreen', 'minimal-ui', 'browser'];
+  return modes.find((mode) => matchMedia(`(display-mode: ${mode})`).matches) ?? 'otro';
+}
+
 /** Las medidas reales: con una captura de Ajustes se puede diagnosticar un teléfono a distancia. */
 function measureScreen(): string {
   const app = document.querySelector('.frame')?.getBoundingClientRect();
@@ -34,6 +39,7 @@ function measureScreen(): string {
     `Ventana ${innerWidth}×${innerHeight}`,
     `App ${Math.round(app?.width ?? 0)}×${Math.round(app?.height ?? 0)}`,
     `Zona segura ${parseInt(paddingTop)}/${parseInt(paddingBottom)}`,
+    `Modo ${displayMode()}${document.documentElement.classList.contains('installed-app') ? ' (app)' : ''}`,
   ].join(' · ');
 }
 

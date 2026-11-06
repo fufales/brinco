@@ -1,3 +1,15 @@
+/**
+ * Marca la app instalada en un dispositivo táctil. No basta con `display-mode` en
+ * CSS: WebKit a veces reporta `fullscreen` en vez de `standalone`, y en iOS lo
+ * seguro es `navigator.standalone`.
+ */
+export function markInstalledApp() {
+  const onIosHomeScreen = (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  const installed = matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches;
+  const touch = matchMedia('(pointer: coarse)').matches;
+  document.documentElement.classList.toggle('installed-app', onIosHomeScreen || (installed && touch));
+}
+
 const DOUBLE_TAP_MS = 300;
 const INTERACTIVE = 'button, a, input, select, textarea, label';
 

@@ -43,17 +43,20 @@ body,
 }
 
 /*
- * Instalada en iPhone, la ventana de la página puede medir menos que la pantalla
- * justo por safe-area-inset-top, y lo anclado a ella deja una franja abajo.
- * 100lvh sí mide toda la pantalla. No aplica en pestañas: ahí la barra del
- * navegador taparía la parte de abajo.
+ * Instalada en iPhone, iOS dibuja desde arriba de la pantalla pero mide la página
+ * como si empezara bajo la barra de estado: 100%, 100dvh e inset: 0 quedan cortos
+ * y dejan una franja abajo. 100lvh sí mide toda la pantalla, pero solo sirve en la
+ * app: en una pestaña, la barra del navegador taparía la parte de abajo.
+ * La clase la pone markInstalledApp() en lockViewport.ts.
  */
-@media (display-mode: standalone) and (pointer: coarse) {
-  html,
-  body,
-  #root {
-    height: 100lvh;
-  }
+.installed-app,
+.installed-app body {
+  position: static;
+  overflow: visible;
+}
+
+.installed-app #root {
+  height: 100lvh;
 }
 
 html,
