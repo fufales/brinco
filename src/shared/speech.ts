@@ -61,19 +61,37 @@ let chosenVoiceURI: string | null = null;
 let baseRate = NORMAL_RATE;
 const listeners = new Set<() => void>();
 
+/** Safari no siempre avisa cuando cargan las voces: hay que volver a preguntar. */
+const VOICE_RETRY_MS = [250, 1000, 2500, 5000];
+/** Errores que sí significan que no hay con qué hablar; `not-allowed` y `canceled` no. */
+const NO_VOICE_ERRORS = new Set(['language-unavailable', 'voice-unavailable', 'synthesis-unavailable', 'synthesis-failed']);
+
+let voiceFailed = false;
+
+function notify() {
+  listeners.forEach((listener) => listener());
+}
+
 function refreshVoices() {
   if (!synth) return;
-  voices = sortVoices(synth.getVoices());
-  listeners.forEach((listener) => listener());
+  const next = sortVoices(synth.getVoices());
+  if (next.length === voices.length) return;
+  voices = next;
+  notify();
 }
 
 if (synth) {
   refreshVoices();
   synth.addEventListener?.('voiceschanged', refreshVoices);
+  VOICE_RETRY_MS.forEach((delay) => window.setTimeout(refreshVoices, delay));
 }
 
-export function isSpeechSupported(): boolean {
-  return Boolean(synth);
+export type SpeechProblem = 'unsupported' | 'no-voice' | null;
+
+/** Una lista vacía no basta para avisar: iOS puede hablar en inglés sin entregarla. */
+export function getSpeechProblem(): SpeechProblem {
+  if (!synth) return 'unsupported';
+  return voiceFailed && voices.length === 0 ? 'no-voice' : null;
 }
 
 export function getEnglishVoices(): SpeechSynthesisVoice[] {
@@ -110,6 +128,7 @@ export function unlockSpeech() {
 
 export function speak(text: string, options: { slow?: boolean } = {}): void {
   if (!synth) return;
+  if (voices.length === 0) refreshVoices();
   // Sin esto, tocar varias imágenes seguidas acumula palabras en cola.
   synth.cancel();
   // Chrome en Android puede quedar en pausa tras pasar a segundo plano.
@@ -128,6 +147,12 @@ export function speak(text: string, options: { slow?: boolean } = {}): void {
     let started = false;
     utterance.onstart = () => {
       started = true;
+    };
+    utterance.onerror = (event) => {
+      if (voices.length === 0 && NO_VOICE_ERRORS.has(event.error)) {
+        voiceFailed = true;
+        notify();
+      }
     };
     synth.speak(utterance);
 
