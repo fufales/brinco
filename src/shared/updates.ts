@@ -7,7 +7,7 @@ export const APP_VERSION = __APP_VERSION__;
 export type CheckResult = 'latest' | 'found' | 'failed' | 'unavailable';
 
 /** Una PWA instalada casi no navega: el navegador solo no buscaría versiones nuevas. */
-const CHECK_EVERY_MS = 15 * 60 * 1000;
+const CHECK_EVERY_MS = 5 * 60 * 1000; // antes 15 min
 const VERSION_KEY = 'brinco:version';
 
 let registration: ServiceWorkerRegistration | undefined;
@@ -19,7 +19,15 @@ const gate = createUpdateGate(() => applyUpdate());
 function checkSilently() {
   if (!registration || registration.installing || !navigator.onLine) return;
   // Un fallo de red aquí no importa: se intentará en la siguiente búsqueda.
-  registration.update().catch(() => {});
+  registration.update()
+    .then(() => {
+      if (registration?.waiting || registration?.installing) {
+        console.log('[brinco] Nueva versión detectada');
+      }
+    })
+    .catch((err) => {
+      console.warn('[brinco] Error checking update:', err);
+    });
 }
 
 function rememberVersion() {
@@ -41,6 +49,8 @@ export function startUpdates() {
     onRegisteredSW(_url, current) {
       registration = current;
       if (!current) return;
+      // Primer check inmediato al abrir la app
+      checkSilently();
       window.setInterval(checkSilently, CHECK_EVERY_MS);
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') checkSilently();
