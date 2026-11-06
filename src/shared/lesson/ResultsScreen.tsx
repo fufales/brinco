@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import confetti from 'canvas-confetti';
 import { motion } from 'motion/react';
-import { sfx } from '../../../shared/sfx';
-import { speak } from '../../../shared/speech';
-import { Mascot } from '../../../shared/ui/Mascot';
-import { StarIcon } from '../../../shared/ui/icons';
-import { WordArt } from '../illustrations';
-import type { Word } from '../words';
+import { sfx } from '../sfx';
+import { speak } from '../speech';
+import { Mascot } from '../ui/Mascot';
+import { StarIcon } from '../ui/icons';
+import type { LessonItem } from './types';
 
 const STAR_DELAY_MS = 420;
 
@@ -20,14 +19,16 @@ export function ResultsScreen({
   stars,
   clean,
   total,
-  words,
+  items,
+  renderThumb,
   onRestart,
   onExit,
 }: {
   stars: number;
   clean: number;
   total: number;
-  words: Word[];
+  items: LessonItem[];
+  renderThumb: (item: LessonItem, play: number) => ReactNode;
   onRestart: () => void;
   onExit: () => void;
 }) {
@@ -78,20 +79,18 @@ export function ResultsScreen({
 
         <p className="results__hint">Toca para oír otra vez</p>
         <div className="results__words">
-          {words.map((word) => (
+          {items.map((item) => (
             <button
-              key={word.id}
+              key={item.id}
               className="results__word"
               lang="en"
               onClick={() => {
-                speak(word.en);
-                setPlayed((current) => ({ ...current, [word.id]: (current[word.id] ?? 0) + 1 }));
+                speak(item.en);
+                setPlayed((current) => ({ ...current, [item.id]: (current[item.id] ?? 0) + 1 }));
               }}
             >
-              <span className="results__word-art">
-                <WordArt id={word.id} play={played[word.id] ?? 0} />
-              </span>
-              {word.en}
+              <span className="results__word-art">{renderThumb(item, played[item.id] ?? 0)}</span>
+              {item.en}
             </button>
           ))}
         </div>

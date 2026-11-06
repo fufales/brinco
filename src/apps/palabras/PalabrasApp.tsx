@@ -1,4 +1,5 @@
 import { Redirect, Route, Switch } from 'wouter';
+import '../../shared/lesson/lesson.css';
 import { isScope } from './words';
 import { DiscoverScreen } from './screens/DiscoverScreen';
 import { LessonScreen } from './screens/LessonScreen';

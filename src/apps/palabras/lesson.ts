@@ -1,3 +1,4 @@
+import { shuffle, type Random } from '../../shared/lesson/utils';
 import { ALL_ID, WORDS, wordsIn, type Scope, type Word } from './words';
 
 export type Exercise =
@@ -5,22 +6,11 @@ export type Exercise =
   | { kind: 'spell'; key: string; word: Word; tiles: string[] }
   | { kind: 'match'; key: string; words: Word[] };
 
-type Random = () => number;
-
 /** Palabras más largas se piden armar solo si no hay otra opción: a los 7 años cuestan mucho. */
 const MAX_SPELL_LENGTH = 7;
 const TARGET_LENGTH = 10;
 const OPTION_COUNT = 4;
 const PAIRS_PER_MATCH = 4;
-
-export function shuffle<T>(items: readonly T[], random: Random = Math.random): T[] {
-  const result = [...items];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
 
 function pickOptions(word: Word, random: Random): Word[] {
   // Primero las de la misma letra: es más difícil y es lo que practica.
@@ -138,11 +128,4 @@ export function retryExercise(exercise: Exercise, attempt: number, random: Rando
 
 export function exerciseWords(exercise: Exercise): Word[] {
   return exercise.kind === 'match' ? exercise.words : [exercise.word];
-}
-
-export function starsFor(cleanCount: number, total: number): number {
-  const ratio = total === 0 ? 0 : cleanCount / total;
-  if (ratio >= 0.9) return 3;
-  if (ratio >= 0.6) return 2;
-  return 1;
 }

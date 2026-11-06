@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildLesson, exerciseWords, retryExercise, starsFor, type Exercise } from './lesson';
+import { buildLesson, exerciseWords, retryExercise, type Exercise } from './lesson';
 import { GROUPS, WORDS, wordsIn } from './words';
 
 function seeded(seed: number) {
@@ -60,14 +60,5 @@ describe('retryExercise', () => {
     const retried = retryExercise(exercise, 1, seeded(9));
     expect(retried.key).not.toBe(exercise.key);
     expect(exerciseWords(retried)).toEqual(exerciseWords(exercise));
-  });
-});
-
-describe('starsFor', () => {
-  it('gives at least one star and three for a nearly clean lesson', () => {
-    expect(starsFor(0, 10)).toBe(1);
-    expect(starsFor(6, 10)).toBe(2);
-    expect(starsFor(9, 10)).toBe(3);
-    expect(starsFor(10, 10)).toBe(3);
   });
 });

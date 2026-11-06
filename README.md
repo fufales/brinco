@@ -24,6 +24,24 @@ Practica 17 palabras en inglés, agrupadas por su letra inicial. Al tocar una im
 
 Cada lección mezcla cuatro ejercicios: escuchar y tocar, leer y tocar, unir parejas y armar la palabra. No hay vidas ni castigos: un error recibe una respuesta amable y el ejercicio vuelve al final.
 
+## Brincanúmeros
+
+Practica los números del 11 al 20 en inglés. Cada número se presenta como **diez y algunos más**, con marcos de diez.
+
+<p align="center">
+  <img src="docs/numeros-escuchar.jpg" alt="Tarjetas de números con marcos de diez" width="200" />
+  <img src="docs/numeros-construir.jpg" alt="Construir un número con +10 y +1" width="200" />
+  <img src="docs/numeros-brincar.jpg" alt="La rana salta por las hojas en orden" width="200" />
+  <img src="docs/numeros-luciernagas.jpg" alt="Atrapar luciérnagas con números" width="200" />
+</p>
+
+- **Escucha y toca** y **Lee y toca:** oír o leer el número y encontrarlo.
+- **Cuenta:** contar desde diez tocando el marco.
+- **Construye el número:** armarlo con +10 y +1.
+- **Brinca en orden** y **¿Qué número falta?:** la rana salta por las hojas de nenúfar.
+- **Une las parejas:** cada número con su palabra.
+- **Atrapa las luciérnagas:** un minijuego en el que la rana atrapa con la lengua el número que oye.
+
 ## Publicarla en un servidor
 
 Es un sitio estático, así que no necesita base de datos ni configuración.
@@ -80,7 +98,7 @@ El resultado queda en `dist/`.
 2. Añade una entrada en [`src/apps/registry.ts`](src/apps/registry.ts). Ya aparece sola en el inicio, con su propia ruta.
 3. En las pantallas que no se deben interrumpir, llama a `useBlockUpdates()`: las actualizaciones esperarán a que se cierren.
 
-El código común está en `src/shared/`: voz, sonidos, progreso, botones y la mascota.
+El código común está en `src/shared/`: voz, sonidos, progreso, botones y la mascota. En `src/shared/lesson/` está lo necesario para armar lecciones: `LessonRunner`, `DiscoverGrid`, `MatchBoard` y la pantalla de resultados.
 
 ## Privacidad
 

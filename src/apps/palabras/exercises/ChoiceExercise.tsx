@@ -7,7 +7,7 @@ import { WordArt } from '../illustrations';
 import type { Exercise } from '../lesson';
 import { WordText } from '../WordText';
 import type { Word } from '../words';
-import type { ExerciseResult } from './types';
+import type { ExerciseResult } from '../../../shared/lesson/types';
 
 type Props = {
   exercise: Extract<Exercise, { kind: 'listen' | 'read' }>;
@@ -32,7 +32,7 @@ export function ChoiceExercise({ exercise, onDone }: Props) {
     if (picked) return;
     setPicked(option.id);
     const clean = option.id === word.id;
-    onDone({ clean, passed: clean, word, missedIds: clean ? [] : [word.id] });
+    onDone({ clean, passed: clean, item: word, missedIds: clean ? [] : [word.id] });
   };
 
   const replay = () => {

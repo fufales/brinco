@@ -1,5 +1,6 @@
 import { lazy, type ComponentType } from 'react';
 import type { State } from '../shared/progress';
+import { NumerosIcon, numerosSummary } from './numeros/summary';
 import { PalabrasIcon, palabrasSummary } from './palabras/summary';
 
 export interface MiniApp {
@@ -28,5 +29,16 @@ export const APPS: MiniApp[] = [
     Icon: PalabrasIcon,
     Component: lazy(() => import('./palabras/PalabrasApp')),
     summary: palabrasSummary,
+  },
+  {
+    id: 'numeros',
+    title: 'Brincanúmeros',
+    tagline: 'Del 11 al 20 en inglés',
+    path: '/numeros',
+    color: '#17b8a6',
+    edge: '#0c8f80',
+    Icon: NumerosIcon,
+    Component: lazy(() => import('./numeros/NumerosApp')),
+    summary: numerosSummary,
   },
 ];

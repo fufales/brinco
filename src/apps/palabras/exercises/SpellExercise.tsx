@@ -5,7 +5,7 @@ import { speak } from '../../../shared/speech';
 import { SpeakerIcon } from '../../../shared/ui/icons';
 import { WordArt } from '../illustrations';
 import type { Exercise } from '../lesson';
-import type { ExerciseResult } from './types';
+import type { ExerciseResult } from '../../../shared/lesson/types';
 
 type Props = {
   exercise: Extract<Exercise, { kind: 'spell' }>;
@@ -43,7 +43,7 @@ export function SpellExercise({ exercise, onDone }: Props) {
       onDone({
         clean: !missed.current,
         passed: true,
-        word,
+        item: word,
         missedIds: missed.current ? [word.id] : [],
       });
     }
