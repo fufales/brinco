@@ -1,7 +1,7 @@
 {
   "name": "brinco",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Brinco: mini apps para que los niños aprendan jugando.",
   "license": "MIT",
   "type": "module",
