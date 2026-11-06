@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci-deploy:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,16 +34,5 @@ jobs:
         with:
           files: brinco-web.zip
 
-      - name: Deploy webhook
-        run: |
-          if [ "${{ github.ref_type }}" = "tag" ]; then
-            curl -fsS --ipv4 -X POST "https://openclaw7987asd98.klooid.com/deploy/brinco" \
-              -H "Authorization: Bearer ${{ secrets.BRINCO_DEPLOY_TOKEN }}" \
-              -H "Content-Type: application/json" \
-              -d "{\"ref\":\"${{ github.ref_name }}\"}"
-          else
-            curl -fsS --ipv4 -X POST "https://openclaw7987asd98.klooid.com/deploy/brinco" \
-              -H "Authorization: Bearer ${{ secrets.BRINCO_DEPLOY_TOKEN }}" \
-              -H "Content-Type: application/json" \
-              -d '{"ref":"latest"}'
-          fi
+  # Deploy via webhook disabled for now; keepalive-based pull-CD handles it.
+  # Every 5 min, keepalive.sh checks latest brinco release and auto-deploys.
