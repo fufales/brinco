@@ -34,6 +34,20 @@ Es un sitio estático, así que no necesita base de datos ni configuración.
 
 Con HTTPS, además se puede instalar en la pantalla de inicio y usar sin conexión.
 
+## Lanzar una versión
+
+Desde `main`, sin cambios pendientes:
+
+```bash
+npm version patch
+```
+
+Usa `patch` para arreglos, `minor` para funciones nuevas y `major` para cambios grandes. El comando corre las pruebas, sube la versión, crea el commit y el tag, y hace push. Con ese tag, CI crea el Release que el servidor despliega. Un push normal a `main` no llega a los teléfonos.
+
+La app instalada busca versiones nuevas al abrirse, al volver a primer plano y cada 15 minutos. La descarga en segundo plano y se actualiza sola en cuanto el niño sale de una actividad, sin perder el progreso. La versión actual se ve en **Ajustes**, donde también se puede buscar una actualización a mano.
+
+Si hay un CDN delante del servidor, no debe cachear `sw.js` ni `index.html`: retrasaría las actualizaciones.
+
 ## Sobre la voz
 
 La app usa la voz del propio dispositivo (`speechSynthesis`) y elige la mejor voz en inglés americano que encuentre, así que el sonido puede variar según el teléfono. Los papás pueden cambiar la voz y la velocidad en **Ajustes**, con el engrane de la pantalla de inicio.
@@ -64,6 +78,7 @@ El resultado queda en `dist/`.
 
 1. Crea su carpeta en `src/apps/`.
 2. Añade una entrada en [`src/apps/registry.ts`](src/apps/registry.ts). Ya aparece sola en el inicio, con su propia ruta.
+3. En las pantallas que no se deben interrumpir, llama a `useBlockUpdates()`: las actualizaciones esperarán a que se cierren.
 
 El código común está en `src/shared/`: voz, sonidos, progreso, botones y la mascota.
 

@@ -5,6 +5,7 @@ import { useLocation } from 'wouter';
 import { recordLesson } from '../../../shared/progress';
 import { sfx } from '../../../shared/sfx';
 import { speak } from '../../../shared/speech';
+import { useBlockUpdates } from '../../../shared/updates';
 import { Mascot } from '../../../shared/ui/Mascot';
 import { Sheet } from '../../../shared/ui/Sheet';
 import { CloseIcon, SpeakerIcon, StarIcon } from '../../../shared/ui/icons';
@@ -28,6 +29,7 @@ interface Outcome {
 }
 
 export function LessonScreen({ scope }: { scope: Scope }) {
+  useBlockUpdates();
   const [round, setRound] = useState(0);
   return <LessonRun key={round} scope={scope} onRestart={() => setRound((count) => count + 1)} />;
 }

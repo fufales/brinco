@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { resetProgress, updateSettings, useProgress } from '../progress';
 import { NORMAL_RATE, speak } from '../speech';
+import { APP_VERSION, checkForUpdate, type CheckResult } from '../updates';
 import { Sheet } from './Sheet';
 import { useEnglishVoices } from './VoiceNotice';
 import { SpeakerIcon } from './icons';
@@ -11,6 +12,37 @@ const SPEEDS = [
   { label: 'Normal', rate: NORMAL_RATE },
   { label: 'Rápida', rate: 1 },
 ];
+
+const CHECK_MESSAGES: Record<CheckResult, string> = {
+  latest: 'Ya tienes la última versión.',
+  found: '¡Hay una versión nueva! Actualizando…',
+  failed: 'No se pudo buscar. Revisa la conexión.',
+  unavailable: 'Las actualizaciones no están disponibles aquí.',
+};
+
+function VersionRow() {
+  const [checking, setChecking] = useState(false);
+  const [result, setResult] = useState<CheckResult | null>(null);
+
+  const check = async () => {
+    setChecking(true);
+    setResult(null);
+    setResult(await checkForUpdate());
+    setChecking(false);
+  };
+
+  return (
+    <div className="settings__version">
+      <div className="settings__version-text">
+        <strong>Versión {APP_VERSION}</strong>
+        {result && <small role="status">{CHECK_MESSAGES[result]}</small>}
+      </div>
+      <button className="settings__check" disabled={checking} onClick={check}>
+        {checking ? 'Buscando…' : 'Buscar actualización'}
+      </button>
+    </div>
+  );
+}
 
 export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { settings } = useProgress();
@@ -83,6 +115,8 @@ export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () =>
       >
         {confirmReset ? '¿Seguro? Toca otra vez' : 'Borrar el progreso'}
       </button>
+
+      <VersionRow />
 
       <button className="btn btn--grape btn--wide" onClick={onClose}>
         Listo

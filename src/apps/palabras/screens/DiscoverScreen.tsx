@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import { isMastered, useProgress } from '../../../shared/progress';
 import { sfx } from '../../../shared/sfx';
 import { speak } from '../../../shared/speech';
+import { useBlockUpdates } from '../../../shared/updates';
 import { VoiceNotice } from '../../../shared/ui/VoiceNotice';
 import { BackIcon, PlayIcon, SpeakerIcon, StarIcon } from '../../../shared/ui/icons';
 import { WordArt } from '../illustrations';
@@ -22,6 +23,7 @@ interface LastTap {
 }
 
 export function DiscoverScreen({ scope }: { scope: Scope }) {
+  useBlockUpdates();
   const state = useProgress();
   const [, navigate] = useLocation();
   const words = wordsIn(scope);

@@ -4,6 +4,9 @@ import '@fontsource-variable/fredoka';
 import './shared/styles.css';
 import { App } from './App';
 import { unlockSpeech } from './shared/speech';
+import { startUpdates } from './shared/updates';
+
+startUpdates();
 
 window.addEventListener('click', unlockSpeech, { capture: true, once: true });
 
