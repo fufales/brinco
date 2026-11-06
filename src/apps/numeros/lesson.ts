@@ -4,16 +4,18 @@ import { MAX_VALUE, MIN_VALUE, NUMBERS, numbersIn, type NumberItem, type NumberS
 export type NumberExercise =
   | { kind: 'listen' | 'read'; key: string; item: NumberItem; options: NumberItem[] }
   | { kind: 'count'; key: string; item: NumberItem; options: NumberItem[] }
-  | { kind: 'build'; key: string; item: NumberItem }
+  | { kind: 'write'; key: string; item: NumberItem; tiles: string[] }
   | { kind: 'missing'; key: string; item: NumberItem; line: number[]; options: NumberItem[] }
   | { kind: 'hop'; key: string; items: NumberItem[] }
   | { kind: 'match'; key: string; items: NumberItem[] };
 
-type SingleKind = 'listen' | 'read' | 'count' | 'build' | 'missing';
+type SingleKind = 'listen' | 'read' | 'count' | 'write' | 'missing';
 
 const PAIRS_PER_MATCH = 4;
 const LINE_LENGTH = 5;
 const CHALLENGE_HOPS = 6;
+const DIGIT_TILES = 4;
+const DIGITS = '0123456789'.split('');
 
 const byValue = (a: NumberItem, b: NumberItem) => a.value - b.value;
 
@@ -42,11 +44,21 @@ function missingOptions(item: NumberItem, line: number[], random: Random): Numbe
   return shuffle([item, ...outside.slice(0, 2)], random);
 }
 
+/** Las cifras del número y otras de relleno, hasta completar las fichas. */
+function digitTiles(item: NumberItem, random: Random): string[] {
+  const digits = String(item.value).split('');
+  const others = shuffle(
+    DIGITS.filter((digit) => !digits.includes(digit)),
+    random,
+  );
+  return shuffle([...digits, ...others.slice(0, DIGIT_TILES - digits.length)], random);
+}
+
 function single(kind: SingleKind, item: NumberItem, random: Random): NumberExercise {
   const key = `${kind}-${item.id}`;
   switch (kind) {
-    case 'build':
-      return { kind, key, item };
+    case 'write':
+      return { kind, key, item, tiles: digitTiles(item, random) };
     case 'missing': {
       const line = missingLine(item, random);
       return { kind, key, item, line, options: missingOptions(item, line, random) };
@@ -68,23 +80,23 @@ const GROUP_PLAN: (SingleKind | 'match' | 'hop')[] = [
   'count',
   'read',
   'match',
-  'build',
+  'write',
   'listen',
   'count',
   'missing',
-  'build',
+  'write',
   'hop',
 ];
 
 const CHALLENGE_PLAN: (SingleKind | 'match' | 'hop')[] = [
   'listen',
   'count',
-  'build',
+  'write',
   'read',
   'missing',
   'match',
   'listen',
-  'build',
+  'write',
   'count',
   'read',
   'missing',

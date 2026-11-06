@@ -153,35 +153,3 @@
 .slot.is-filled {
   border-bottom-color: var(--lime);
 }
-
-.spell__tiles {
-  flex: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding-bottom: 14px;
-}
-
-.letter-tile {
-  width: 68px;
-  height: 72px;
-  border-radius: 18px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 38px;
-  line-height: 1;
-  font-weight: 700;
-  box-shadow: 0 6px 0 var(--accent-edge);
-}
-
-.letter-tile:active:not(:disabled) {
-  transform: translateY(5px) !important;
-  box-shadow: 0 1px 0 var(--accent-edge);
-}
-
-.letter-tile.is-used {
-  background: var(--line);
-  color: transparent;
-  box-shadow: none;
-}

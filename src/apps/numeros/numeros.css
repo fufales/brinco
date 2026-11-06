@@ -221,45 +221,57 @@ button.tf__frame {
   box-shadow: 0 5px 0 var(--sky-dark);
 }
 
-.build__goal {
+.exercise--write {
+  justify-content: space-between;
+}
+
+.write__goal {
   flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-.build__target {
-  font-size: 52px;
+.write__word {
+  font-size: 38px;
   line-height: 1;
   font-weight: 700;
 }
 
-.build__word {
-  font-size: 26px;
-  font-weight: 700;
+.write__pads {
+  flex: none;
+  height: 230px;
 }
 
-.build__equation {
-  flex: none;
-  min-height: 30px;
-  font-size: 24px;
-  line-height: 1.2;
-  font-weight: 700;
-  text-align: center;
+.write__pad {
+  position: absolute;
+  top: 62%;
+  width: 38%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
 }
 
-.build__buttons {
-  flex: none;
+.write__digit,
+.write__empty {
+  position: absolute;
+  inset: 17%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: auto;
-  padding-bottom: 10px;
+  place-items: center;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  background: #fff;
+  font-size: 50px;
+  line-height: 1;
+  font-weight: 700;
 }
 
-.build__add {
-  font-size: 34px;
+.write__empty {
+  border-style: dashed;
+}
+
+.write__empty.is-next {
+  background: var(--sun);
 }
 
 .hop__slots {

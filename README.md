@@ -30,14 +30,14 @@ Practica los números del 11 al 20 en inglés. Cada número se presenta como **d
 
 <p align="center">
   <img src="docs/numeros-escuchar.jpg" alt="Tarjetas de números con marcos de diez" width="200" />
-  <img src="docs/numeros-construir.jpg" alt="Construir un número con +10 y +1" width="200" />
+  <img src="docs/numeros-escribir.jpg" alt="Escribir un número tocando sus cifras" width="200" />
   <img src="docs/numeros-brincar.jpg" alt="La rana salta por las hojas en orden" width="200" />
   <img src="docs/numeros-luciernagas.jpg" alt="Atrapar luciérnagas con números" width="200" />
 </p>
 
 - **Escucha y toca** y **Lee y toca:** oír o leer el número y encontrarlo.
 - **Cuenta:** contar desde diez tocando el marco.
-- **Construye el número:** armarlo con +10 y +1.
+- **Escribe el número:** oírlo y tocar sus cifras, mientras la rana salta a cada hoja.
 - **Brinca en orden** y **¿Qué número falta?:** la rana salta por las hojas de nenúfar.
 - **Une las parejas:** cada número con su palabra.
 - **Atrapa las luciérnagas:** un minijuego en el que la rana atrapa con la lengua el número que oye.

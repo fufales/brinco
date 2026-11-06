@@ -1,11 +1,11 @@
 import { useLocation } from 'wouter';
 import { LessonRunner } from '../../../shared/lesson/LessonRunner';
 import { MatchBoard } from '../../../shared/lesson/MatchBoard';
-import { BuildExercise } from '../exercises/BuildExercise';
 import { CountExercise } from '../exercises/CountExercise';
 import { HopExercise } from '../exercises/HopExercise';
 import { MissingExercise } from '../exercises/MissingExercise';
 import { NumberChoice } from '../exercises/NumberChoice';
+import { WriteExercise } from '../exercises/WriteExercise';
 import { buildNumberLesson, exerciseNumbers, retryNumberExercise } from '../lesson';
 import { progressKey, scopeInfo, type NumberScope } from '../numbers';
 import { NumberTile, numberOf } from '../parts';
@@ -27,8 +27,8 @@ export function LessonScreen({ scope }: { scope: NumberScope }) {
             return <NumberChoice exercise={exercise} onDone={onDone} />;
           case 'count':
             return <CountExercise exercise={exercise} onDone={onDone} />;
-          case 'build':
-            return <BuildExercise exercise={exercise} onDone={onDone} />;
+          case 'write':
+            return <WriteExercise exercise={exercise} onDone={onDone} />;
           case 'missing':
             return <MissingExercise exercise={exercise} onDone={onDone} />;
           case 'hop':

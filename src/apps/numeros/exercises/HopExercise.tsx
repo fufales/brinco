@@ -55,6 +55,7 @@ export function HopExercise({ exercise, onDone }: Props) {
     const nextReached = reached + 1;
     setReached(nextReached);
     if (nextReached === items.length) {
+      window.clearTimeout(landing.current);
       landing.current = window.setTimeout(() => {
         onDone({
           clean: missed.current.size === 0,

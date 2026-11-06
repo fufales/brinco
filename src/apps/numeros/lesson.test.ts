@@ -3,7 +3,8 @@ import { buildNumberLesson, exerciseNumbers, retryNumberExercise, type NumberExe
 import { numbersIn, type NumberScope } from './numbers';
 
 function seeded(seed: number) {
-  let value = seed;
+  // Se dispersa la semilla: las pequeñas casi no mezclan y siempre darían órdenes parecidos.
+  let value = (seed * 2654435761) % 2147483647;
   return () => {
     value = (value * 16807) % 2147483647;
     return value / 2147483647;
@@ -36,7 +37,7 @@ describe('buildNumberLesson', () => {
   it('uses every kind of exercise', () => {
     forEverySeed((_scope, lesson) => {
       expect(new Set(lesson.map((exercise) => exercise.kind))).toEqual(
-        new Set(['listen', 'read', 'count', 'build', 'missing', 'hop', 'match']),
+        new Set(['listen', 'read', 'count', 'write', 'missing', 'hop', 'match']),
       );
     });
   });
@@ -68,6 +69,36 @@ describe('buildNumberLesson', () => {
         }
       }
     });
+  });
+
+  it('offers the digits of the number among four tiles', () => {
+    forEverySeed((_scope, lesson) => {
+      for (const exercise of lesson) {
+        if (exercise.kind !== 'write') continue;
+        expect(exercise.tiles).toHaveLength(4);
+        const remaining = [...exercise.tiles];
+        for (const digit of String(exercise.item.value)) {
+          const found = remaining.indexOf(digit);
+          expect(found).toBeGreaterThanOrEqual(0);
+          remaining.splice(found, 1);
+        }
+        // Las de relleno no pueden ser una de las cifras: no habría forma de equivocarse con ellas.
+        for (const digit of remaining) expect(String(exercise.item.value)).not.toContain(digit);
+      }
+    });
+  });
+
+  it('has two tiles of 1 for eleven', () => {
+    for (let seed = 1; seed < 200; seed++) {
+      const eleven = buildNumberLesson('a', seeded(seed)).find(
+        (exercise) => exercise.kind === 'write' && exercise.item.value === 11,
+      );
+      if (eleven?.kind === 'write') {
+        expect(eleven.tiles.filter((digit) => digit === '1')).toHaveLength(2);
+        return;
+      }
+    }
+    throw new Error('No lesson asked to write eleven');
   });
 
   it('shows five numbers in a row around the missing one', () => {
