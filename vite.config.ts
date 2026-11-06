@@ -24,6 +24,8 @@ export default defineConfig({
         start_url: './',
         scope: './',
         display: 'standalone',
+        // Android oculta las barras del sistema; iOS no lo admite y se queda en standalone.
+        display_override: ['fullscreen', 'standalone'],
         orientation: 'portrait',
         background_color: '#6C4DF6',
         theme_color: '#6C4DF6',

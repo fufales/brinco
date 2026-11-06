@@ -4,6 +4,7 @@ import { Redirect, Route, Router, Switch } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 import { APPS } from './apps/registry';
 import { Hub } from './hub/Hub';
+import { RotateHint } from './shared/ui/RotateHint';
 import { UpdateToast } from './shared/ui/UpdateToast';
 
 export function App() {
@@ -12,6 +13,7 @@ export function App() {
       <Router hook={useHashLocation}>
         <main className="frame">
           <UpdateToast />
+          <RotateHint />
           <Suspense fallback={null}>
             <Switch>
               <Route path="/" component={Hub} />
