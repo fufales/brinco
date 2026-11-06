@@ -33,10 +33,6 @@
   touch-action: pan-x pan-y;
 }
 
-/*
- * La app se ancla a la pantalla en vez de calcular su alto: en PWAs de iOS,
- * 100vh y 100dvh pueden quedar cortos y dejar un espacio abajo.
- */
 html,
 body,
 #root {
@@ -44,6 +40,20 @@ body,
   inset: 0;
   margin: 0;
   overflow: hidden;
+}
+
+/*
+ * Instalada en iPhone, la ventana de la página puede medir menos que la pantalla
+ * justo por safe-area-inset-top, y lo anclado a ella deja una franja abajo.
+ * 100lvh sí mide toda la pantalla. No aplica en pestañas: ahí la barra del
+ * navegador taparía la parte de abajo.
+ */
+@media (display-mode: standalone) and (pointer: coarse) {
+  html,
+  body,
+  #root {
+    height: 100lvh;
+  }
 }
 
 html,

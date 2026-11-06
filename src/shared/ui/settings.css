@@ -114,6 +114,12 @@
   color: var(--ink-soft);
 }
 
+.settings__version-text .settings__measures {
+  font-size: 11px;
+  line-height: 1.25;
+  opacity: 0.8;
+}
+
 .settings__check {
   flex: none;
   max-width: 50%;

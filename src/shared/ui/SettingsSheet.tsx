@@ -20,9 +20,27 @@ const CHECK_MESSAGES: Record<CheckResult, string> = {
   unavailable: 'Las actualizaciones no están disponibles aquí.',
 };
 
+/** Las medidas reales: con una captura de Ajustes se puede diagnosticar un teléfono a distancia. */
+function measureScreen(): string {
+  const app = document.querySelector('.frame')?.getBoundingClientRect();
+  const probe = document.createElement('div');
+  probe.style.cssText =
+    'position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)';
+  document.body.append(probe);
+  const { paddingTop, paddingBottom } = getComputedStyle(probe);
+  probe.remove();
+  return [
+    `Pantalla ${screen.width}×${screen.height}`,
+    `Ventana ${innerWidth}×${innerHeight}`,
+    `App ${Math.round(app?.width ?? 0)}×${Math.round(app?.height ?? 0)}`,
+    `Zona segura ${parseInt(paddingTop)}/${parseInt(paddingBottom)}`,
+  ].join(' · ');
+}
+
 function VersionRow() {
   const [checking, setChecking] = useState(false);
   const [result, setResult] = useState<CheckResult | null>(null);
+  const [measures] = useState(measureScreen);
 
   const check = async () => {
     setChecking(true);
@@ -36,6 +54,7 @@ function VersionRow() {
       <div className="settings__version-text">
         <strong>Versión {APP_VERSION}</strong>
         {result && <small role="status">{CHECK_MESSAGES[result]}</small>}
+        <small className="settings__measures">{measures}</small>
       </div>
       <button className="settings__check" disabled={checking} onClick={check}>
         {checking ? 'Buscando…' : 'Buscar actualización'}
