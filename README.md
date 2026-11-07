@@ -42,6 +42,19 @@ Practica los números del 11 al 20 en inglés. Cada número se presenta como **d
 - **Une las parejas:** cada número con su palabra.
 - **Atrapa las luciérnagas:** un minijuego en el que la rana atrapa con la lengua el número que oye.
 
+## Brincaescuela
+
+Practica cinco lugares de la escuela en inglés: garden (jardín), restroom (baño), principal's office (dirección), library (biblioteca) y classroom (aula).
+
+<p align="center">
+  <img src="docs/escuela-inicio.jpg" alt="Portada de Brincaescuela con sus tres actividades" width="200" />
+  <img src="docs/escuela-mapa.jpg" alt="Plano de la escuela con la rana en la entrada" width="200" />
+</p>
+
+- **Descubre:** tocar cada lugar para oír su nombre.
+- **Lección:** escuchar y tocar, leer y tocar, y unir parejas.
+- **¿Dónde está?:** la voz dice, por ejemplo, "Go to the library!" y la rana salta al lugar que el niño toca en el plano de la escuela.
+
 ## Publicarla en un servidor
 
 Es un sitio estático, así que no necesita base de datos ni configuración.
