@@ -260,7 +260,7 @@ p {
   overflow-y: auto;
 }
 
-/* Aviso breve tras actualizar: no estorba los botones de arriba. */
+/* Aviso de actualización: modo post (después de actualizar) y modo pre (update pendiente). */
 .update-toast {
   position: absolute;
   top: calc(12px + var(--safe-top));
@@ -281,10 +281,46 @@ p {
   pointer-events: none;
 }
 
+/* Cuando hay update pendiente, es interactivo y más llamativo. */
+.update-toast--ready {
+  border-color: var(--grape);
+  background: linear-gradient(135deg, #fff 70%, #f1ecfe);
+  pointer-events: auto;
+}
+
 .update-toast__frog {
   flex: none;
   width: 52px;
   height: 52px;
+}
+
+.update-toast__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.update-toast__btn {
+  --face: var(--grape);
+  --edge: var(--grape-dark);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: var(--face);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 5px 0 var(--edge);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.update-toast__btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--edge);
 }
 
 .progress {
