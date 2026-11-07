@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { resetProgress, updateSettings, useProgress } from '../progress';
 import { NORMAL_RATE, speak } from '../speech';
-import { APP_VERSION, checkForUpdate, type CheckResult } from '../updates';
+import { APP_VERSION, checkForUpdate, triggerUpdate, type CheckResult } from '../updates';
 import { Sheet } from './Sheet';
 import { useEnglishVoices } from './VoiceNotice';
 import { SpeakerIcon } from './icons';
@@ -51,7 +51,12 @@ function VersionRow() {
   const check = async () => {
     setChecking(true);
     setResult(null);
-    setResult(await checkForUpdate());
+    const r = await checkForUpdate();
+    setResult(r);
+    if (r === 'found') {
+      // Sí hay update → activarlo ahora mismo
+      triggerUpdate();
+    }
     setChecking(false);
   };
 
