@@ -62,6 +62,12 @@ npm version patch
 
 Usa `patch` para arreglos, `minor` para funciones nuevas y `major` para cambios grandes. El comando corre las pruebas, sube la versión, crea el commit y el tag, y hace push. Con ese tag, CI crea el Release que el servidor despliega. Un push normal a `main` no llega a los teléfonos.
 
+Cada Release trae `brinco-web.zip` y `brinco-web.zip.sha256`. Antes de descomprimir en el servidor, conviene verificar el paquete:
+
+```bash
+sha256sum -c brinco-web.zip.sha256
+```
+
 La app instalada busca versiones nuevas al abrirse, al volver a primer plano y cada 15 minutos. La descarga en segundo plano y se actualiza sola en cuanto el niño sale de una actividad, sin perder el progreso. La versión actual se ve en **Ajustes**, donde también se puede buscar una actualización a mano.
 
 Si hay un CDN delante del servidor, no debe cachear `sw.js` ni `index.html`: retrasaría las actualizaciones.
