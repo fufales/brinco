@@ -21,12 +21,18 @@ const gate = createUpdateGate(() => {
   if (applyUpdate) applyUpdate();
 });
 
+/** Dispara un evento en window para que UpdateToast muestre el botón. */
+function dispatchUpdateReady() {
+  window.dispatchEvent(new CustomEvent('brinco:update-ready'));
+}
+
 function checkSilently() {
   if (!registration || registration.installing || !navigator.onLine) return;
   registration.update()
     .then(() => {
       if (registration?.waiting || registration?.installing) {
         console.log('[brinco] Nueva versión detectada');
+        dispatchUpdateReady();
       }
     })
     .catch((err) => {
@@ -50,8 +56,10 @@ export function startUpdates() {
   rememberVersion();
 
   const activateWaitingVersion = registerSW({
-    immediate: true,
-    onNeedRefresh: () => gate.markReady(),
+    onNeedRefresh: () => {
+      dispatchUpdateReady();
+      gate.markReady();
+    },
     onRegisteredSW(_url, current) {
       registration = current;
       if (!current) return;
@@ -88,7 +96,11 @@ export async function checkForUpdate(): Promise<CheckResult> {
   } catch {
     return 'failed';
   }
-  return registration.installing || registration.waiting ? 'found' : 'latest';
+  if (registration.installing || registration.waiting) {
+    dispatchUpdateReady();
+    return 'found';
+  }
+  return 'latest';
 }
 
 /** Fuerza la activación de la versión en espera (skipWaiting + recarga automática).

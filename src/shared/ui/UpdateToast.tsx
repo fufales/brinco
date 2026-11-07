@@ -9,8 +9,8 @@ const VISIBLE_MS = 4000;
  * Toast que avisa de una actualización.
  *
  * Modo 1 — "Nueva versión disponible": aparece cuando el SW detectó un update
- *   pendiente. Muestra botón "Actualizar ahora" para que el usuario active
- *   skipWaiting manualmente.
+ *   pendiente (evento 'brinco:update-ready'). Muestra botón "Actualizar ahora"
+ *   para que el usuario active skipWaiting manualmente.
  *
  * Modo 2 — "Actualizado a vX.Y.Z": aparece DESPUÉS de que la app se recargó
  *   con una versión nueva. Auto-desaparece tras VISIBLE_MS ms.
