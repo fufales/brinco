@@ -1,20 +1,21 @@
 import { useLocation } from 'wouter';
 import { DiscoverGrid } from '../../../shared/lesson/DiscoverGrid';
-import { PlaceArt } from '../illustrations';
-import { PLACES, SCHOOL_COLORS } from '../places';
+import { SCHOOL_COLORS } from '../places';
+import type { Topic } from '../topics';
 
-export function DiscoverScreen() {
+export function DiscoverScreen({ topic }: { topic: Topic }) {
   const [, navigate] = useLocation();
+  const { Art } = topic;
   return (
     <DiscoverGrid
-      title="Lugares de la escuela"
-      hint="Toca un lugar para oír su nombre"
-      items={PLACES}
+      title={topic.discoverTitle}
+      hint={topic.discoverHint}
+      items={topic.items}
       accent={SCHOOL_COLORS}
-      renderArt={(place, plays) => <PlaceArt id={place.id} play={plays} />}
-      renderWord={(place) => <span lang="en">{place.en}</span>}
+      renderArt={(item, plays) => <Art id={item.id} play={plays} />}
+      renderWord={(item) => <span lang="en">{item.en}</span>}
       onBack={() => navigate('/')}
-      onPlay={() => navigate('/leccion')}
+      onPlay={() => navigate(`${topic.base}/leccion`)}
     />
   );
 }

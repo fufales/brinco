@@ -14,7 +14,7 @@
   position: relative;
   flex: none;
   align-self: center;
-  width: min(62vw, 230px, 26vh);
+  width: min(50vw, 190px, 22vh);
   aspect-ratio: 1;
 }
 
@@ -32,6 +32,32 @@
   width: 40%;
   aspect-ratio: 1;
   transform-origin: 50% 100%;
+}
+
+.school__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.school__heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(20, 50, 130, 0.4);
+}
+
+.school__heading-art {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  padding: 4px;
+  border-radius: 16px;
+  background: #fff;
 }
 
 .school__options {
@@ -144,9 +170,9 @@
   min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1.1fr 1fr 1fr 0.6fr;
+  grid-template-rows: 1fr 1fr 1fr 0.6fr;
   grid-template-areas:
-    'garden garden'
+    'garden cafeteria'
     'classroom library'
     'restroom office'
     'entrance entrance';
@@ -189,6 +215,84 @@
 
 .campus__room--office {
   --floor: #e2d6ff;
+}
+
+.campus__room--cafeteria {
+  --floor: #ffd9c7;
+}
+
+/* En ¿Quién es? los cuartos son el fondo y se tocan las personas; el guarda necesita una entrada más alta. */
+.campus__plan--people {
+  grid-template-rows: 1fr 1fr 1fr 0.85fr;
+}
+
+.campus__plan--people .campus__art {
+  opacity: 0.32;
+}
+
+/* Donde hay alguien, el lugar queda como un ícono en la esquina para no confundirse con las personas. */
+.campus__plan--people .campus__room:has(.campus__people) .campus__art {
+  inset: 6px auto auto 6px;
+  width: 34%;
+  height: 34%;
+  opacity: 0.55;
+}
+
+.campus__people {
+  position: absolute;
+  inset: 4px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Ancho fijo: con ancho automático, Safari agranda al guarda fuera del plano. */
+.campus__people--entrance {
+  inset: 2px auto 2px 6px;
+  width: 32%;
+}
+
+.campus__people--entrance .campus__person {
+  width: 100%;
+  aspect-ratio: auto;
+}
+
+.campus__person {
+  flex: 0 1 auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 2px;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+}
+
+/* Dos personas comparten la dirección: se traslapan un poco para verse más grandes. */
+.campus__people--office {
+  top: 22%;
+}
+
+.campus__people--office .campus__person {
+  flex: none;
+  width: 60%;
+  height: auto;
+  max-width: none;
+  margin: 0 -6%;
+}
+
+.campus__person.is-hint {
+  border-color: var(--sun-dark);
+  background: rgba(255, 197, 49, 0.35);
+  animation: campus-hint 0.6s ease-in-out infinite alternate;
+}
+
+.campus__person.is-reached {
+  border-color: var(--lime-dark);
+  background: rgba(111, 214, 75, 0.35);
 }
 
 /* El dibujo se ajusta al cuarto sin cortarse, sea ancho o bajito. */

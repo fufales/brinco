@@ -1,53 +1,56 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import type { ExerciseResult } from '../../shared/lesson/types';
+import type { ExerciseResult, LessonItem } from '../../shared/lesson/types';
 import { sfx } from '../../shared/sfx';
 import { speak } from '../../shared/speech';
 import { SpeakerIcon } from '../../shared/ui/icons';
-import { PlaceArt } from './illustrations';
 import type { SchoolExercise } from './lesson';
-import type { Place } from './places';
+import type { Topic } from './topics';
 
 type Props = {
+  topic: Topic;
   exercise: Extract<SchoolExercise, { kind: 'listen' | 'read' }>;
   onDone: (result: ExerciseResult) => void;
 };
 
-export function PlaceChoice({ exercise, onDone }: Props) {
-  const { kind, place, options } = exercise;
+export function SchoolChoice({ topic, exercise, onDone }: Props) {
+  const { kind, item, options } = exercise;
+  const { Art } = topic;
   const [picked, setPicked] = useState<string | null>(null);
   const [speakerPulse, setSpeakerPulse] = useState(0);
 
   useEffect(() => {
     if (kind !== 'listen') return;
     const timer = window.setTimeout(() => {
-      speak(place.en);
+      speak(item.en);
       setSpeakerPulse((count) => count + 1);
     }, 350);
     return () => window.clearTimeout(timer);
-  }, [kind, place.en]);
+  }, [kind, item.en]);
 
-  const pick = (option: Place) => {
+  const pick = (option: LessonItem) => {
     if (picked) return;
     setPicked(option.id);
-    const clean = option.id === place.id;
-    onDone({ clean, passed: clean, item: place, missedIds: clean ? [] : [place.id] });
+    const clean = option.id === item.id;
+    onDone({ clean, passed: clean, item, missedIds: clean ? [] : [item.id] });
   };
 
   const replay = () => {
-    speak(place.en);
+    speak(item.en);
     setSpeakerPulse((count) => count + 1);
   };
 
   return (
     <div className="exercise">
-      <h2 className="exercise__title">{kind === 'listen' ? 'Escucha y toca el lugar' : 'Lee y toca el lugar'}</h2>
+      <h2 className="exercise__title">
+        {kind === 'listen' ? 'Escucha' : 'Lee'} y toca {topic.pickWhat}
+      </h2>
 
       {kind === 'listen' ? (
         <motion.button
           key={speakerPulse}
           className="speaker"
-          aria-label="Oír el lugar otra vez"
+          aria-label="Oír otra vez"
           animate={speakerPulse > 0 ? { scale: [1, 1.14, 1] } : undefined}
           transition={{ duration: 0.4 }}
           onClick={replay}
@@ -56,13 +59,13 @@ export function PlaceChoice({ exercise, onDone }: Props) {
         </motion.button>
       ) : (
         <p className="prompt-word place-prompt" lang="en">
-          {place.en}
+          {item.en}
         </p>
       )}
 
       <div className="choices">
         {options.map((option) => {
-          const isAnswer = option.id === place.id;
+          const isAnswer = option.id === item.id;
           const isPicked = option.id === picked;
           const state = !picked ? '' : isAnswer ? 'is-right' : isPicked ? 'is-wrong' : 'is-faded';
           return (
@@ -79,7 +82,7 @@ export function PlaceChoice({ exercise, onDone }: Props) {
               }}
               onClick={() => pick(option)}
             >
-              <PlaceArt id={option.id} play={picked && isAnswer ? 1 : 0} />
+              <Art id={option.id} play={picked && isAnswer ? 1 : 0} />
             </motion.button>
           );
         })}

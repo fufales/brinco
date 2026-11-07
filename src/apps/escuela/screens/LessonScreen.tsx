@@ -1,36 +1,37 @@
 import { useLocation } from 'wouter';
 import { LessonRunner } from '../../../shared/lesson/LessonRunner';
 import { MatchBoard } from '../../../shared/lesson/MatchBoard';
-import { PlaceArt } from '../illustrations';
-import { buildSchoolLesson, exercisePlaces, retrySchoolExercise } from '../lesson';
-import { PlaceChoice } from '../PlaceChoice';
-import { LESSON_KEY, SCHOOL_COLORS } from '../places';
+import { buildSchoolLesson, exerciseItems, retrySchoolExercise } from '../lesson';
+import { SCHOOL_COLORS } from '../places';
+import { SchoolChoice } from '../SchoolChoice';
+import type { Topic } from '../topics';
 
-export function LessonScreen() {
+export function LessonScreen({ topic }: { topic: Topic }) {
   const [, navigate] = useLocation();
+  const { Art } = topic;
   return (
     <LessonRunner
-      progressKey={LESSON_KEY}
+      progressKey={topic.lessonKey}
       accent={SCHOOL_COLORS}
-      build={() => buildSchoolLesson()}
-      itemsOf={exercisePlaces}
+      build={() => buildSchoolLesson(topic.items, topic.readCount)}
+      itemsOf={exerciseItems}
       retry={retrySchoolExercise}
       oopsTitle="¡Casi! Es este:"
       renderExercise={(exercise, onDone) =>
         exercise.kind === 'match' ? (
           <MatchBoard
-            title="Une cada lugar con su nombre"
-            items={exercise.places}
-            renderLeft={(place, done) => <PlaceArt id={place.id} play={done ? 1 : 0} />}
-            leftLabel={(place) => `Dibujo de ${place.es}`}
+            title={topic.matchTitle}
+            items={exercise.items}
+            renderLeft={(item, done) => <Art id={item.id} play={done ? 1 : 0} />}
+            leftLabel={(item) => `Dibujo de ${item.es}`}
             onDone={onDone}
           />
         ) : (
-          <PlaceChoice exercise={exercise} onDone={onDone} />
+          <SchoolChoice topic={topic} exercise={exercise} onDone={onDone} />
         )
       }
       renderItemText={(item) => <span lang="en">{item.en}</span>}
-      renderThumb={(item, play) => <PlaceArt id={item.id} play={play} />}
+      renderThumb={(item, play) => <Art id={item.id} play={play} />}
       onExit={() => navigate('/')}
     />
   );

@@ -154,12 +154,38 @@ export function Classroom() {
   );
 }
 
+export function Cafeteria() {
+  return (
+    <Art>
+      {/* vapor */}
+      <path d="M66 70 Q58 58 66 48 T66 26 M86 66 Q78 54 86 44 T86 22" stroke={SKY} strokeWidth={5} />
+      {/* mesa */}
+      <path d="M38 164 V196 M162 164 V196" stroke={INK} strokeWidth={8} />
+      <rect x={14} y={150} width={172} height={14} rx={5} fill={GOLD} />
+      {/* bandeja */}
+      <path d="M24 138 H176 L166 152 H34 Z" fill={SKY_LIGHT} />
+      {/* plato con sándwich */}
+      <ellipse cx={78} cy={130} rx={46} ry={12} fill={WHITE} />
+      <path d="M50 128 L78 82 L106 128 Z" fill={SUN} />
+      <path d="M58 114 Q66 108 72 114 T86 114 T98 114" stroke={LIME} strokeWidth={6} />
+      <Face x={78} y={104} gap={14} r={3} />
+      {/* jugo y manzana */}
+      <rect x={128} y={88} width={30} height={44} rx={4} fill={CORAL} />
+      <path d="M150 88 L156 70 L166 66" strokeWidth={4} />
+      <rect x={134} y={102} width={18} height={14} rx={3} fill={WHITE} strokeWidth={3} />
+      <circle cx={166} cy={124} r={11} fill={RED} />
+      <path d="M166 113 Q168 106 174 104" strokeWidth={4} />
+    </Art>
+  );
+}
+
 const ILLUSTRATIONS: Record<string, ComponentType> = {
   garden: Garden,
   restroom: Restroom,
   'principal-office': PrincipalOffice,
   library: Library,
   classroom: Classroom,
+  cafeteria: Cafeteria,
 };
 
 const SWAY: TargetAndTransition = {
@@ -187,6 +213,7 @@ const ANIMATIONS: Record<string, TargetAndTransition> = {
   'principal-office': NOD,
   library: POP,
   classroom: POP,
+  cafeteria: WOBBLE,
 };
 
 /** Dibuja el lugar y reproduce su animación cada vez que cambia `play`. */

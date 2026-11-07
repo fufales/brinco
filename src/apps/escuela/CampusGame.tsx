@@ -1,26 +1,29 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import confetti from 'canvas-confetti';
 import { motion } from 'motion/react';
 import { useLocation } from 'wouter';
-import { ResultsScreen } from '../../../shared/lesson/ResultsScreen';
-import { shuffle, starsFor } from '../../../shared/lesson/utils';
-import { recordLesson } from '../../../shared/progress';
-import { sfx } from '../../../shared/sfx';
-import { speak } from '../../../shared/speech';
-import { Mascot, type Mood } from '../../../shared/ui/Mascot';
-import { Sheet } from '../../../shared/ui/Sheet';
-import { CloseIcon, SpeakerIcon } from '../../../shared/ui/icons';
-import { useBlockUpdates } from '../../../shared/updates';
-import { PlaceArt } from '../illustrations';
-import { directions, MAP_KEY, PLACES, type Place } from '../places';
+import { ResultsScreen } from '../../shared/lesson/ResultsScreen';
+import type { LessonItem } from '../../shared/lesson/types';
+import { shuffle, starsFor } from '../../shared/lesson/utils';
+import { recordLesson } from '../../shared/progress';
+import { sfx } from '../../shared/sfx';
+import { speak } from '../../shared/speech';
+import { Mascot, type Mood } from '../../shared/ui/Mascot';
+import { Sheet } from '../../shared/ui/Sheet';
+import { CloseIcon, SpeakerIcon } from '../../shared/ui/icons';
+import { useBlockUpdates } from '../../shared/updates';
+import { PlaceArt } from './illustrations';
+import { PEOPLE, type CampusArea } from './people';
+import type { Topic } from './topics';
 
-/** Dónde está cada lugar en el plano: el jardín afuera, arriba; la entrada, abajo. */
-const ROOMS: { id: string; area: string }[] = [
-  { id: 'garden', area: 'garden' },
-  { id: 'classroom', area: 'classroom' },
-  { id: 'library', area: 'library' },
-  { id: 'restroom', area: 'restroom' },
-  { id: 'principal-office', area: 'office' },
+/** Dónde está cada lugar en el plano; la entrada, abajo, es donde empieza la rana. */
+const ROOMS: { placeId: string; area: CampusArea }[] = [
+  { placeId: 'garden', area: 'garden' },
+  { placeId: 'cafeteria', area: 'cafeteria' },
+  { placeId: 'classroom', area: 'classroom' },
+  { placeId: 'library', area: 'library' },
+  { placeId: 'restroom', area: 'restroom' },
+  { placeId: 'principal-office', area: 'office' },
 ];
 const ENTRANCE = 'entrance';
 const SAY_NEXT_MS = 300;
@@ -28,15 +31,21 @@ const NEXT_ROUND_MS = 1300;
 const CHEER_AFTER_HOP_MS = 380;
 const WRONG_TAPS_BEFORE_HINT = 2;
 
-export function MapScreen() {
+/**
+ * El plano de la escuela. Con lugares, se tocan los cuartos ("Go to the library!");
+ * con personas, cada una está en su lugar y se toca a ella ("Find the cook!").
+ */
+export function CampusGame({ topic }: { topic: Topic }) {
   useBlockUpdates();
   const [game, setGame] = useState(0);
-  return <MapGame key={game} onRestart={() => setGame((count) => count + 1)} />;
+  return <CampusRound key={game} topic={topic} onRestart={() => setGame((count) => count + 1)} />;
 }
 
-function MapGame({ onRestart }: { onRestart: () => void }) {
+function CampusRound({ topic, onRestart }: { topic: Topic; onRestart: () => void }) {
   const [, navigate] = useLocation();
-  const [order] = useState(() => shuffle(PLACES));
+  const { Art } = topic;
+  const peopleMode = topic.id === 'people';
+  const [order] = useState(() => shuffle(topic.items));
   const [round, setRound] = useState(0);
   const target = order[round];
 
@@ -61,17 +70,18 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
 
   useEffect(() => {
     if (finished) return;
-    const timer = window.setTimeout(() => speak(directions(target)), SAY_NEXT_MS);
+    const timer = window.setTimeout(() => speak(topic.say(target)), SAY_NEXT_MS);
     return () => window.clearTimeout(timer);
-  }, [target, finished]);
+  }, [target, finished, topic]);
 
-  // La rana se para abajo al centro del lugar donde está.
+  // La rana se para abajo al centro de donde está; junto a una persona, a sus pies.
   const placeFrog = useCallback(() => {
     const area = plan.current?.getBoundingClientRect();
     const spot = spots.current[frogAt]?.getBoundingClientRect();
     if (!area || !spot) return;
-    setFrogPos({ x: spot.left - area.left + spot.width / 2, y: spot.bottom - area.top - 30 });
-  }, [frogAt]);
+    const lift = peopleMode && frogAt !== ENTRANCE ? 6 : 30;
+    setFrogPos({ x: spot.left - area.left + spot.width / 2, y: spot.bottom - area.top - lift });
+  }, [frogAt, peopleMode]);
 
   useLayoutEffect(placeFrog, [placeFrog]);
   useEffect(() => {
@@ -83,25 +93,25 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
     timers.current.push(window.setTimeout(callback, delay));
   };
 
-  const arrive = (place: Place, element: HTMLElement) => {
+  const arrive = (item: LessonItem, element: HTMLElement) => {
     busy.current = true;
     if (wrongTaps === 0) cleanRounds.current += 1;
-    setFrogAt(place.id);
+    setFrogAt(item.id);
     setHops((count) => count + 1);
     sfx.hop();
 
     later(() => {
-      const room = element.getBoundingClientRect();
+      const box = element.getBoundingClientRect();
       sfx.correct();
-      speak(place.en);
+      speak(item.en);
       setMood('cheer');
-      setReached(place.id);
+      setReached(item.id);
       void confetti({
         particleCount: 26,
         spread: 60,
         origin: {
-          x: (room.left + room.width / 2) / window.innerWidth,
-          y: (room.top + room.height / 2) / window.innerHeight,
+          x: (box.left + box.width / 2) / window.innerWidth,
+          y: (box.top + box.height / 2) / window.innerHeight,
         },
         disableForReducedMotion: true,
       });
@@ -117,9 +127,9 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
         const clean = cleanRounds.current;
         const stars = starsFor(clean, order.length);
         recordLesson(
-          MAP_KEY,
+          topic.gameKey,
           stars,
-          PLACES.filter((item) => !missed.current.has(item.id)).map((item) => item.id),
+          topic.items.filter((each) => !missed.current.has(each.id)).map((each) => each.id),
         );
         setFinished({ stars, clean });
       } else {
@@ -128,19 +138,52 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
     }, NEXT_ROUND_MS);
   };
 
-  const tapRoom = (place: Place, element: HTMLElement) => {
+  const tap = (item: LessonItem, element: HTMLElement) => {
     if (busy.current) return;
-    if (place.id === target.id) {
-      arrive(place, element);
+    if (item.id === target.id) {
+      arrive(item, element);
       return;
     }
-    // Ese lugar tiembla y la voz repite a dónde ir.
+    // El equivocado tiembla y la voz repite la frase.
     missed.current.add(target.id);
     sfx.oops();
-    speak(directions(target));
+    speak(topic.say(target));
     setMood('oops');
-    setWrong((current) => ({ id: place.id, count: (current?.count ?? 0) + 1 }));
+    setWrong((current) => ({ id: item.id, count: (current?.count ?? 0) + 1 }));
     setWrongTaps((count) => count + 1);
+  };
+
+  /** Lo que se toca: el cuarto entero o una persona. */
+  const tappable = (item: LessonItem, className: string, style: CSSProperties | undefined, content: ReactNode) => {
+    const isWrong = wrong?.id === item.id;
+    const needsHint = item.id === target.id && wrongTaps >= WRONG_TAPS_BEFORE_HINT;
+    return (
+      <motion.button
+        key={`${item.id}-${isWrong ? wrong.count : 0}`}
+        ref={(element) => {
+          spots.current[item.id] = element;
+        }}
+        className={`${className} ${needsHint ? 'is-hint' : ''} ${reached === item.id ? 'is-reached' : ''}`}
+        style={style}
+        aria-label={item.es}
+        animate={isWrong ? { x: [0, -9, 9, -6, 6, 0] } : undefined}
+        transition={{ duration: 0.35 }}
+        whileTap={{ scale: 0.96 }}
+        onClick={(event) => tap(item, event.currentTarget)}
+      >
+        {content}
+      </motion.button>
+    );
+  };
+
+  const peopleIn = (area: CampusArea) => {
+    const here = PEOPLE.filter((person) => person.area === area);
+    if (here.length === 0) return null;
+    return (
+      <div className={`campus__people campus__people--${area}`}>
+        {here.map((person) => tappable(person, 'campus__person', undefined, <Art id={person.id} play={reached === person.id ? 1 : 0} />))}
+      </div>
+    );
   };
 
   if (finished) {
@@ -149,8 +192,8 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
         stars={finished.stars}
         clean={finished.clean}
         total={order.length}
-        items={PLACES}
-        renderThumb={(item, play) => <PlaceArt id={item.id} play={play} />}
+        items={topic.items}
+        renderThumb={(item, play) => <Art id={item.id} play={play} />}
         onRestart={onRestart}
         onExit={() => navigate('/')}
       />
@@ -174,37 +217,30 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
       </header>
 
       <div className="campus__prompt">
-        <button className="speaker speaker--inline" aria-label="Oír otra vez" onClick={() => speak(directions(target))}>
+        <button className="speaker speaker--inline" aria-label="Oír otra vez" onClick={() => speak(topic.say(target))}>
           <SpeakerIcon />
         </button>
         <p lang="en">
-          Go to the <strong>{target.en}</strong>!
+          {topic.sayVerb} <strong>{target.en}</strong>!
         </p>
       </div>
 
-      <div className="campus__plan" ref={plan}>
+      <div className={`campus__plan ${peopleMode ? 'campus__plan--people' : ''}`} ref={plan}>
         {ROOMS.map((room) => {
-          const place = PLACES.find((item) => item.id === room.id)!;
-          const isWrong = wrong?.id === place.id;
-          const needsHint = place.id === target.id && wrongTaps >= WRONG_TAPS_BEFORE_HINT;
+          const place = topic.id === 'places' ? topic.items.find((item) => item.id === room.placeId) : undefined;
+          const art = (
+            <span className="campus__art">
+              <PlaceArt id={room.placeId} play={reached === room.placeId ? 1 : 0} />
+            </span>
+          );
+          if (place) {
+            return tappable(place, `campus__room campus__room--${room.area}`, { gridArea: room.area }, art);
+          }
           return (
-            <motion.button
-              key={`${place.id}-${isWrong ? wrong.count : 0}`}
-              ref={(element) => {
-                spots.current[place.id] = element;
-              }}
-              className={`campus__room campus__room--${room.area} ${needsHint ? 'is-hint' : ''} ${reached === place.id ? 'is-reached' : ''}`}
-              style={{ gridArea: room.area }}
-              aria-label={place.es}
-              animate={isWrong ? { x: [0, -9, 9, -6, 6, 0] } : undefined}
-              transition={{ duration: 0.35 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={(event) => tapRoom(place, event.currentTarget)}
-            >
-              <span className="campus__art">
-                <PlaceArt id={place.id} play={reached === place.id ? 1 : 0} />
-              </span>
-            </motion.button>
+            <div key={room.placeId} className={`campus__room campus__room--${room.area}`} style={{ gridArea: room.area }}>
+              {art}
+              {peopleIn(room.area)}
+            </div>
           );
         })}
 
@@ -216,6 +252,7 @@ function MapGame({ onRestart }: { onRestart: () => void }) {
           }}
         >
           <span className="campus__door" aria-hidden="true" />
+          {peopleMode && peopleIn('entrance')}
         </div>
 
         {frogPos && (

@@ -8,6 +8,7 @@ export const PLACES: Place[] = [
   { id: 'principal-office', en: "principal's office", es: 'dirección' },
   { id: 'library', en: 'library', es: 'biblioteca' },
   { id: 'classroom', en: 'classroom', es: 'aula' },
+  { id: 'cafeteria', en: 'cafeteria', es: 'comedor' },
 ];
 
 /** Dónde se guardan las estrellas de la lección y del mapa. */

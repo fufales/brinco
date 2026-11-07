@@ -44,16 +44,23 @@ Practica los números del 11 al 20 en inglés. Cada número se presenta como **d
 
 ## Brincaescuela
 
-Practica cinco lugares de la escuela en inglés: garden (jardín), restroom (baño), principal's office (dirección), library (biblioteca) y classroom (aula).
+Practica en inglés los lugares y las personas de la escuela:
+
+- **Lugares:** garden (jardín), restroom (baño), principal's office (dirección), library (biblioteca), classroom (aula) y cafeteria (comedor).
+- **Personas:** principal (directora), cook (cocinero), janitor (conserje), students (estudiantes), teacher (maestra), security guard (guarda) y secretary (secretario).
 
 <p align="center">
-  <img src="docs/escuela-inicio.jpg" alt="Portada de Brincaescuela con sus tres actividades" width="200" />
+  <img src="docs/escuela-inicio.jpg" alt="Portada de Brincaescuela con las secciones Lugares y Personas" width="200" />
   <img src="docs/escuela-mapa.jpg" alt="Plano de la escuela con la rana en la entrada" width="200" />
+  <img src="docs/escuela-quien.jpg" alt="Cada persona de la escuela en su lugar del plano" width="200" />
 </p>
 
-- **Descubre:** tocar cada lugar para oír su nombre.
+Cada sección tiene tres actividades:
+
+- **Descubre:** tocar cada lugar o persona para oír su nombre.
 - **Lección:** escuchar y tocar, leer y tocar, y unir parejas.
-- **¿Dónde está?:** la voz dice, por ejemplo, "Go to the library!" y la rana salta al lugar que el niño toca en el plano de la escuela.
+- **¿Dónde está?** (lugares): la voz dice, por ejemplo, "Go to the library!" y la rana salta al lugar que el niño toca en el plano de la escuela.
+- **¿Quién es?** (personas): cada persona está en su lugar del plano, como el cocinero en el comedor. La voz dice "Find the cook!" y el niño la toca.
 
 ## Publicarla en un servidor
 

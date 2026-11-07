@@ -45,7 +45,7 @@ export const APPS: MiniApp[] = [
   {
     id: 'escuela',
     title: 'Brincaescuela',
-    tagline: 'Lugares de la escuela en inglés',
+    tagline: 'La escuela en inglés',
     path: '/escuela',
     color: '#3d7bf5',
     edge: '#2357c9',

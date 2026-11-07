@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildSchoolLesson, exercisePlaces, retrySchoolExercise, type SchoolExercise } from './lesson';
+import { buildSchoolLesson, exerciseItems, retrySchoolExercise, type SchoolExercise } from './lesson';
+import { PEOPLE } from './people';
 import { PLACES } from './places';
 
 function seeded(seed: number) {
@@ -10,48 +11,57 @@ function seeded(seed: number) {
   };
 }
 
-function mainPlace(exercise: SchoolExercise) {
-  return exercise.kind === 'match' ? null : exercise.place.id;
+function mainItem(exercise: SchoolExercise) {
+  return exercise.kind === 'match' ? null : exercise.item.id;
 }
 
-describe('buildSchoolLesson', () => {
-  it('practices all five places in 10 exercises with one match', () => {
-    for (let seed = 1; seed < 60; seed++) {
-      const lesson = buildSchoolLesson(seeded(seed));
-      expect(lesson).toHaveLength(10);
-      expect(new Set(lesson.flatMap(exercisePlaces).map((place) => place.id))).toEqual(new Set(PLACES.map((place) => place.id)));
-      expect(new Set(lesson.map((exercise) => exercise.key)).size).toBe(lesson.length);
-      expect(lesson.filter((exercise) => exercise.kind === 'match')).toHaveLength(1);
-    }
-  });
+const TOPICS = [
+  { name: 'places', items: PLACES, readCount: 3 },
+  { name: 'people', items: PEOPLE, readCount: 2 },
+];
 
-  it('never asks the same place twice in a row', () => {
-    for (let seed = 1; seed < 200; seed++) {
-      const lesson = buildSchoolLesson(seeded(seed));
-      lesson.forEach((exercise, index) => {
-        if (index > 0 && mainPlace(exercise)) expect(mainPlace(exercise)).not.toBe(mainPlace(lesson[index - 1]));
-      });
-    }
-  });
+for (const { name, items, readCount } of TOPICS) {
+  describe(`buildSchoolLesson for ${name}`, () => {
+    const build = (seed: number) => buildSchoolLesson(items, readCount, seeded(seed));
 
-  it('builds valid choices and a match of four different places', () => {
-    for (let seed = 1; seed < 60; seed++) {
-      for (const exercise of buildSchoolLesson(seeded(seed))) {
-        if (exercise.kind === 'match') {
-          expect(new Set(exercise.places.map((place) => place.id)).size).toBe(4);
-        } else {
-          expect(exercise.options).toHaveLength(4);
-          expect(new Set(exercise.options.map((place) => place.id)).size).toBe(4);
-          expect(exercise.options.some((place) => place.id === exercise.place.id)).toBe(true);
+    it('practices every item in 10 exercises with one match', () => {
+      for (let seed = 1; seed < 60; seed++) {
+        const lesson = build(seed);
+        expect(lesson).toHaveLength(10);
+        expect(new Set(lesson.flatMap(exerciseItems).map((item) => item.id))).toEqual(new Set(items.map((item) => item.id)));
+        expect(new Set(lesson.map((exercise) => exercise.key)).size).toBe(lesson.length);
+        expect(lesson.filter((exercise) => exercise.kind === 'match')).toHaveLength(1);
+      }
+    });
+
+    it('never asks the same item twice in a row', () => {
+      for (let seed = 1; seed < 200; seed++) {
+        const lesson = build(seed);
+        lesson.forEach((exercise, index) => {
+          if (index > 0 && mainItem(exercise)) expect(mainItem(exercise)).not.toBe(mainItem(lesson[index - 1]));
+        });
+      }
+    });
+
+    it('builds valid choices and a match of four different items', () => {
+      for (let seed = 1; seed < 60; seed++) {
+        for (const exercise of build(seed)) {
+          if (exercise.kind === 'match') {
+            expect(new Set(exercise.items.map((item) => item.id)).size).toBe(4);
+          } else {
+            expect(exercise.options).toHaveLength(4);
+            expect(new Set(exercise.options.map((item) => item.id)).size).toBe(4);
+            expect(exercise.options.some((item) => item.id === exercise.item.id)).toBe(true);
+          }
         }
       }
-    }
-  });
+    });
 
-  it('gives retries a new key and keeps the same options', () => {
-    const [first] = buildSchoolLesson(seeded(7));
-    const retry = retrySchoolExercise(first, 1, seeded(3));
-    expect(retry.key).not.toBe(first.key);
-    expect(new Set(exercisePlaces(retry).map((place) => place.id))).toEqual(new Set(exercisePlaces(first).map((place) => place.id)));
+    it('gives retries a new key and keeps the same options', () => {
+      const [first] = build(7);
+      const retry = retrySchoolExercise(first, 1, seeded(3));
+      expect(retry.key).not.toBe(first.key);
+      expect(new Set(exerciseItems(retry).map((item) => item.id))).toEqual(new Set(exerciseItems(first).map((item) => item.id)));
+    });
   });
-});
+}
