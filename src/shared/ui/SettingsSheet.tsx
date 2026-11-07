@@ -90,7 +90,7 @@ export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () =>
       <h2 className="settings__title">Ajustes para papás</h2>
 
       <label className="settings__field">
-        <span>Voz en inglés</span>
+        <span>Voz de respaldo del teléfono</span>
         <select
           value={settings.voiceURI ?? ''}
           onChange={(event) => updateSettings({ voiceURI: event.target.value || null })}

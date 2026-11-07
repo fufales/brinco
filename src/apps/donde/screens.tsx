@@ -4,20 +4,21 @@ import { LessonRunner } from '../../shared/lesson/LessonRunner';
 import { MatchBoard } from '../../shared/lesson/MatchBoard';
 import { DondeChoice } from './DondeChoice';
 import { buildDondeLesson, exercisePositions, retryDondeExercise } from './lesson';
-import { DONDE_COLORS, LESSON_KEY, POSITIONS, sentence, type PositionId, type Scene } from './positions';
+import {
+  DISCOVER_EXAMPLES as EXAMPLES,
+  discoverSpeech,
+  DONDE_COLORS,
+  LESSON_KEY,
+  POSITIONS,
+  type PositionId,
+} from './positions';
 import { SceneView } from './Scene';
 
-/** Un ejemplo fijo por posición para Descubre: la voz dice la palabra y luego la frase. */
-const EXAMPLES: Record<PositionId, Scene> = {
-  'next-to': { objects: ['van', 'vase'], position: 'next-to', ref: 1 },
-  'in-front-of': { objects: ['king', 'kangaroo'], position: 'in-front-of', ref: 0 },
-  between: { objects: ['juice', 'volcano'], position: 'between', ref: 0 },
-};
-
+/** En Descubre la voz dice la palabra y luego la frase; la tarjeta muestra solo la palabra. */
 const DISCOVER_ITEMS = POSITIONS.map((item) => ({
   ...item,
   phrase: item.en,
-  en: `${item.en}. ${sentence(EXAMPLES[item.id as PositionId])}`,
+  en: discoverSpeech(item.id as PositionId),
 }));
 
 export function DiscoverScreen() {

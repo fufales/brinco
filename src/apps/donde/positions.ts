@@ -91,6 +91,36 @@ export function command(scene: Scene): string {
   return `Put the frog ${phrase(scene.position)} ${target(scene)}!`;
 }
 
+/** Un ejemplo fijo por posición para Descubre. */
+export const DISCOVER_EXAMPLES: Record<PositionId, Scene> = {
+  'next-to': { objects: ['van', 'vase'], position: 'next-to', ref: 1 },
+  'in-front-of': { objects: ['king', 'kangaroo'], position: 'in-front-of', ref: 0 },
+  between: { objects: ['juice', 'volcano'], position: 'between', ref: 0 },
+};
+
+/** En Descubre la voz dice la palabra y luego la frase: "between. The frog is between the juice and the volcano." */
+export function discoverSpeech(position: PositionId): string {
+  return `${phrase(position)}. ${sentence(DISCOVER_EXAMPLES[position])}`;
+}
+
+/** Todas las frases y órdenes posibles con los objetos de referencia, para generar sus audios. */
+export function allSceneSpeech(): string[] {
+  const lines = new Set<string>();
+  for (const a of OBJECT_IDS) {
+    for (const b of OBJECT_IDS) {
+      if (a === b) continue;
+      for (const item of POSITIONS) {
+        for (const ref of [0, 1] as const) {
+          const scene: Scene = { objects: [a, b], position: item.id as PositionId, ref };
+          lines.add(sentence(scene));
+          lines.add(command(scene));
+        }
+      }
+    }
+  }
+  return [...lines];
+}
+
 export function randomObjects(random: Random = Math.random): [string, string] {
   const [a, b] = shuffle(OBJECT_IDS, random);
   return [a, b];

@@ -123,7 +123,25 @@ Si hay un CDN delante del servidor, no debe cachear `sw.js` ni `index.html`: ret
 
 ## Sobre la voz
 
-La app usa la voz del propio dispositivo (`speechSynthesis`) y elige la mejor voz en inglés americano que encuentre, así que el sonido puede variar según el teléfono. Los papás pueden cambiar la voz y la velocidad en **Ajustes**, con el engrane de la pantalla de inicio.
+Cada palabra y frase en inglés suena con una voz realista grabada de antemano (`public/voice/`), igual en todos los teléfonos y sin internet una vez instalada. Si alguna frase no tuviera audio, la app usa la voz del propio dispositivo como respaldo. Los papás pueden cambiar la velocidad en **Ajustes**, con el engrane de la pantalla de inicio.
+
+### Generar las voces (solo en desarrollo)
+
+Los audios se generan con [OpenRouter](https://openrouter.ai) (`elevenlabs/eleven-v4`, voz `sarah`) y se guardan en el repositorio, así que la app nunca llama a un modelo.
+
+1. Pon tu clave en `.env.local`, que git ignora:
+
+   ```bash
+   echo "OPENROUTER_API_KEY=tu-clave" > .env.local
+   ```
+
+2. Agrega las frases nuevas en [`src/shared/voice/phrases.ts`](src/shared/voice/phrases.ts) y genera solo las que faltan:
+
+   ```bash
+   npm run voices
+   ```
+
+`npm test` falla si alguna frase se queda sin audio o si una clave aparece en el repositorio.
 
 ## Desarrollo
 
@@ -152,12 +170,13 @@ El resultado queda en `dist/`.
 1. Crea su carpeta en `src/apps/`.
 2. Añade una entrada en [`src/apps/registry.ts`](src/apps/registry.ts). Ya aparece sola en el inicio, con su propia ruta.
 3. En las pantallas que no se deben interrumpir, llama a `useBlockUpdates()`: las actualizaciones esperarán a que se cierren.
+4. Registra sus frases en inglés en `src/shared/voice/phrases.ts` y corre `npm run voices`.
 
 El código común está en `src/shared/`: voz, sonidos, progreso, botones y la mascota. En `src/shared/lesson/` está lo necesario para armar lecciones: `LessonRunner`, `DiscoverGrid`, `MatchBoard` y la pantalla de resultados.
 
 ## Privacidad
 
-No hay cuentas, analíticas ni llamadas a servicios externos. El progreso se guarda solo en el dispositivo.
+No hay cuentas, analíticas ni llamadas a servicios externos: las voces vienen dentro de la app. El progreso se guarda solo en el dispositivo.
 
 ## Licencia
 
