@@ -42,23 +42,6 @@ body,
   overflow: hidden;
 }
 
-/*
- * Instalada en iPhone, iOS dibuja desde arriba de la pantalla pero mide la página
- * como si empezara bajo la barra de estado: 100%, 100dvh e inset: 0 quedan cortos
- * y dejan una franja abajo. 100lvh sí mide toda la pantalla, pero solo sirve en la
- * app: en una pestaña, la barra del navegador taparía la parte de abajo.
- * La clase la pone markInstalledApp() en lockViewport.ts.
- */
-.installed-app,
-.installed-app body {
-  position: static;
-  overflow: visible;
-}
-
-.installed-app #root {
-  height: 100lvh;
-}
-
 html,
 body {
   background: #6c4df6;
