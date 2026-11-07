@@ -70,7 +70,7 @@ const IOS_STEPS: Step[] = [
     Icon: ShareIcon,
     text: (
       <>
-        Toca el botón <b>Compartir</b>: el cuadrito con una flecha hacia arriba. Si no lo ves, toca primero los <b>tres puntos</b> de abajo.
+        Toca el botón <b>Compartir</b>: el cuadrito con una flecha hacia arriba. En iPhone suele estar abajo y en iPad, arriba a la derecha. Si no lo ves, toca primero los <b>tres puntos</b>.
       </>
     ),
   },
@@ -139,7 +139,7 @@ export function InstallPage() {
             </p>
           ) : (
             <p>
-              <strong>Pon a Brinco en tu teléfono</strong>
+              <strong>Pon a Brinco en tu teléfono o tablet</strong>
               <br />
               Queda como una app más, con su ícono de ranita.
             </p>
@@ -160,10 +160,10 @@ export function InstallPage() {
               </button>
             )}
 
-            <div className="install__tabs" role="tablist" aria-label="Tipo de teléfono">
+            <div className="install__tabs" role="tablist" aria-label="Tipo de dispositivo">
               {(
                 [
-                  ['ios', 'iPhone'],
+                  ['ios', 'iPhone o iPad'],
                   ['android', 'Android'],
                 ] as const
               ).map(([id, label]) => (
@@ -184,7 +184,7 @@ export function InstallPage() {
             </div>
 
             <Steps key={tab} steps={tab === 'ios' ? IOS_STEPS : ANDROID_STEPS} />
-            {tab === 'ios' && <p className="install__note">En iPhone solo se puede instalar desde Safari, no desde Chrome ni otras apps.</p>}
+            {tab === 'ios' && <p className="install__note">En iPhone y iPad solo se puede instalar desde Safari, no desde Chrome ni otras apps.</p>}
           </>
         )}
 
@@ -196,7 +196,7 @@ export function InstallPage() {
             <li>Se actualiza sola cuando hay juegos nuevos.</li>
           </ul>
           <p className="install__note">
-            El progreso se guarda en el teléfono. Si borras el ícono de Brinco, también se borran las estrellas ganadas en ese teléfono.
+            El progreso se guarda en cada dispositivo. Si borras el ícono de Brinco, también se borran las estrellas ganadas en ese teléfono o tablet.
           </p>
         </section>
       </div>

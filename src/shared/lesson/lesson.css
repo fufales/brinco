@@ -1,55 +1,3 @@
-/* Barra superior compartida */
-.bar {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: calc(12px + var(--safe-top)) 16px 12px;
-}
-
-.bar__title {
-  flex: 1;
-  min-width: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  text-align: center;
-  text-shadow: 0 2px 0 rgba(15, 80, 120, 0.45);
-}
-
-.bar__title--dark {
-  color: var(--ink);
-  text-shadow: none;
-  text-align: left;
-}
-
-.bar .icon-btn {
-  color: var(--ink);
-}
-
-.pill {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  padding: 0 14px 0 8px;
-  border-radius: 999px;
-  background: #fff;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.pill svg {
-  width: 26px;
-  height: 26px;
-}
-
-.stars {
-  display: inline-flex;
-  gap: 2px;
-}
-
 .scope-sheet {
   display: flex;
   flex-direction: column;
@@ -623,4 +571,63 @@
   background: var(--line);
   color: transparent;
   box-shadow: none;
+}
+
+/* Tablet: más tarjetas por fila. */
+.tablet .word-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tablet .discover__cta .btn,
+.tablet .results__actions {
+  display: flex;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+@media (orientation: landscape) {
+  .tablet .word-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* Las opciones de un ejercicio, todas en una fila. */
+  .tablet .choices {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    align-content: center;
+  }
+
+  /* Resultados: la rana y las estrellas a la izquierda, lo practicado a la derecha. */
+  .tablet .results__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-auto-rows: auto;
+    align-content: center;
+    justify-items: center;
+    column-gap: 32px;
+  }
+
+  .tablet .results__body > * {
+    grid-column: 1;
+  }
+
+  .tablet .results__body > .results__words {
+    grid-column: 2;
+    grid-row: 1 / span 6;
+    align-self: center;
+  }
+
+  .tablet .match {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  .tablet .choices > .choice {
+    aspect-ratio: 1;
+    max-height: 100%;
+  }
 }

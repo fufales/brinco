@@ -668,3 +668,9 @@ button.tf__frame {
   height: 100%;
   pointer-events: none;
 }
+
+/* Tablet: el estanque de escribir no se ensancha, o las hojas no caben en su alto. */
+.tablet .write__pads {
+  align-self: center;
+  width: min(100%, 470px);
+}

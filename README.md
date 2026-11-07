@@ -2,7 +2,7 @@
   <img src="public/logo.svg" alt="Brinco" width="420" />
 </p>
 
-<p align="center"><strong>Mini apps para que los niños aprendan jugando, hechas para el celular.</strong></p>
+<p align="center"><strong>Mini apps para que los niños aprendan jugando, hechas para el celular y la tablet.</strong></p>
 
 <p align="center">
   <img src="docs/inicio.jpg" alt="Pantalla de inicio con la ranita Brinco" width="200" />
@@ -83,9 +83,27 @@ Practica tres posiciones en inglés con la rana: **next to** (al lado de), **in 
 - **Lección:** escuchar o leer la frase y elegir la escena correcta, y unir cada escena con su frase.
 - **¡Mueve a la rana!:** la voz dice, por ejemplo, "Put the frog in front of the vase!" y el niño arrastra a la rana o toca la hojita donde va.
 
-## Instalarla en el teléfono
+## En tablets
 
-La página **Instala Brinco** (`#/instalar`) explica en español, paso a paso, cómo instalarla en iPhone (Safari) y en Android (Chrome). Abre sola la pestaña del teléfono que se usa y, en Android, ofrece un botón para instalar directo cuando el navegador lo permite. Se llega desde una tarjeta del inicio, que desaparece una vez instalada, y desde **Ajustes**.
+Brinco funciona en iPad y en tablets Android, en vertical y en horizontal. Los teléfonos siguen solo en vertical.
+
+<p align="center">
+  <img src="docs/tablet-inicio.jpg" alt="Inicio en una tablet acostada: la rana a la izquierda y las apps a la derecha" width="420" />
+  <img src="docs/tablet-mapa.jpg" alt="Plano de la escuela en un iPad" width="210" />
+</p>
+
+- En una tablet, `fitTabletViewport()` (`src/shared/lockViewport.ts`) agranda toda la página con la etiqueta viewport y marca `<html class="tablet">`. La escala sale del lado corto de la pantalla, así que al girarla todo conserva su tamaño. Con la ventana partida en un iPad se usa el diseño de teléfono.
+- No se usa CSS `zoom`, para que el arrastre y las medidas de los juegos sigan funcionando.
+- En horizontal, cada pantalla reparte su contenido con reglas `.tablet` dentro de `@media (orientation: landscape)`:
+  - el inicio pone la rana a un lado y las apps al otro;
+  - Descubre muestra 4 tarjetas por fila;
+  - el plano de la escuela usa 3 columnas;
+  - en "¡Mueve a la rana!", el escenario queda junto a la hojita de salida.
+- Los juegos que miden posiciones vuelven a medir con `ResizeObserver` cuando la tablet gira.
+
+## Instalarla en el teléfono o la tablet
+
+La página **Instala Brinco** (`#/instalar`) explica en español, paso a paso, cómo instalarla en iPhone o iPad (Safari) y en Android (Chrome). Abre sola la pestaña del teléfono que se usa y, en Android, ofrece un botón para instalar directo cuando el navegador lo permite. Se llega desde una tarjeta del inicio, que desaparece una vez instalada, y desde **Ajustes**.
 
 <p align="center">
   <img src="docs/instalar.jpg" alt="Pasos para instalar Brinco en el teléfono" width="200" />

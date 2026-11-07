@@ -331,3 +331,52 @@
   height: 100%;
   transform-origin: 50% 100%;
 }
+
+/* Tablet acostada: las actividades en fila y el plano en tres columnas. */
+@media (orientation: landscape) {
+  .tablet .school__body {
+    justify-content: center;
+    min-height: 100%;
+  }
+
+  .tablet .school__hero {
+    width: min(230px, 34vh);
+  }
+
+  .tablet .school__options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .tablet .school-option {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+
+  .tablet .school-option__text {
+    flex: none;
+    align-items: center;
+  }
+
+  .tablet .campus__plan,
+  .tablet .campus__plan--people {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: 1fr 1fr 0.55fr;
+    grid-template-areas:
+      'garden cafeteria classroom'
+      'library restroom office'
+      'entrance entrance entrance';
+  }
+
+  .tablet .campus__plan--people {
+    grid-template-rows: 1fr 1fr 0.7fr;
+  }
+
+  .tablet .campus__people--entrance {
+    width: 20%;
+  }
+}

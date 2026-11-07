@@ -80,12 +80,12 @@ p {
 
 /* Solo en computadora se muestra como una columna centrada. */
 @media (hover: hover) and (pointer: fine) and (min-width: 600px) {
-  html,
-  body {
+  html:not(.tablet),
+  html:not(.tablet) body {
     background: #241a63;
   }
 
-  .frame {
+  html:not(.tablet) .frame {
     max-width: 480px;
     margin-inline: auto;
   }
@@ -102,12 +102,27 @@ p {
   overflow: hidden;
 }
 
+/*
+ * Tablets: `fitTabletViewport` agranda toda la página y marca <html class="tablet">.
+ * En px CSS, una tablet vertical mide unos 600–690 de ancho, y una acostada unos
+ * 860–920 × 600. En horizontal, cada pantalla reparte su contenido en columnas.
+ */
+.tablet .screen {
+  --side: max(0px, calc((100% - 720px) / 2));
+}
+
+@media (orientation: landscape) {
+  .tablet .screen {
+    --side: max(0px, calc((100% - 1040px) / 2));
+  }
+}
+
 .rotate-hint {
   display: none;
 }
 
 @media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
-  .rotate-hint {
+  html:not(.tablet) .rotate-hint {
     position: absolute;
     inset: 0;
     z-index: 100;
@@ -235,6 +250,59 @@ p {
   height: 28px;
 }
 
+/* Barra superior compartida. Vive aquí, no en lesson.css, porque la usan pantallas
+   que se abren sin haber cargado ninguna lección (por ejemplo, Instalar). */
+.bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(16px + var(--safe-top)) 18px 12px;
+}
+
+.bar__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 0 rgba(15, 80, 120, 0.45);
+}
+
+.bar__title--dark {
+  color: var(--ink);
+  text-shadow: none;
+  text-align: left;
+}
+
+.bar .icon-btn {
+  color: var(--ink);
+}
+
+.pill {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 14px 0 8px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.pill svg {
+  width: 26px;
+  height: 26px;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
 /* Hoja inferior reutilizable. */
 .sheet-backdrop {
   position: absolute;
@@ -350,4 +418,16 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* En tablet, las hojas y avisos no se estiran de orilla a orilla. */
+.tablet .sheet {
+  --inset: max(0px, calc((100% - 640px) / 2));
+  left: var(--inset);
+  right: var(--inset);
+  padding-inline: 28px;
+}
+
+.tablet .update-toast {
+  left: max(14px, calc((100% - 640px) / 2));
+  right: max(14px, calc((100% - 640px) / 2));
 }

@@ -103,9 +103,16 @@ function MoveRound({ onRestart }: { onRestart: () => void }) {
   }, []);
 
   useLayoutEffect(measure, [measure]);
+  // Al girar la tablet cambia el tamaño del escenario: se vuelve a medir cuando el cambio ya se aplicó.
   useEffect(() => {
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    if (arena.current) observer?.observe(arena.current);
+    if (stage.current) observer?.observe(stage.current);
+    return () => {
+      window.removeEventListener('resize', measure);
+      observer?.disconnect();
+    };
   }, [measure]);
 
   const later = (callback: () => void, delay: number) => {

@@ -90,7 +90,7 @@ export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () =>
       <h2 className="settings__title">Ajustes para papás</h2>
 
       <label className="settings__field">
-        <span>Voz de respaldo del teléfono</span>
+        <span>Voz de respaldo del dispositivo</span>
         <select
           value={settings.voiceURI ?? ''}
           onChange={(event) => updateSettings({ voiceURI: event.target.value || null })}
@@ -155,7 +155,7 @@ export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () =>
           navigate('~/instalar');
         }}
       >
-        Cómo instalar en el teléfono
+        Cómo instalar en el teléfono o tablet
       </button>
 
       <VersionRow />

@@ -217,3 +217,42 @@
 .move__frog:active {
   cursor: grabbing;
 }
+
+/* Tablet: las escenas de Descubre, dos o tres por fila. */
+.tablet .word-grid:has(.stage) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (orientation: landscape) {
+  .tablet .word-grid:has(.stage) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Las escenas para elegir, en una fila y con su forma ancha. */
+  .tablet .choices--scenes > .choice--scene {
+    aspect-ratio: 16 / 12;
+  }
+
+  /* Mueve a la rana: el escenario a la izquierda, del alto disponible, y la hojita de salida a la derecha. */
+  .tablet .move__arena {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .tablet .move__arena > .stage {
+    width: auto;
+    height: 100%;
+    max-width: calc(100% - 170px);
+    max-height: 100%;
+  }
+
+  /* Como en el teléfono, la rana se para en el centro de esta caja, encima de la hojita. */
+  .tablet .move__home {
+    flex: 1;
+    min-width: 140px;
+    min-height: 170px;
+    justify-content: flex-end;
+    text-align: center;
+  }
+}

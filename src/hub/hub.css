@@ -253,3 +253,50 @@ button.tile--install:active {
   width: 100%;
   height: 100%;
 }
+
+/* Tablet acostada: la rana y el saludo a la izquierda, las apps a la derecha. */
+@media (orientation: landscape) {
+  .tablet .hub__body {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: 1fr auto auto auto 1fr;
+    column-gap: 28px;
+    row-gap: 12px;
+    overflow: hidden;
+    padding-bottom: 0;
+  }
+
+  .tablet .hub__body > :not(.hub__tiles) {
+    grid-column: 1;
+  }
+
+  .tablet .hub__logo {
+    grid-row: 2;
+  }
+
+  .tablet .hub__stage {
+    grid-row: 3;
+  }
+
+  .tablet .hub__ask {
+    grid-row: 4;
+  }
+
+  .tablet .hub__body > .voice-notice {
+    grid-row: 5;
+    align-self: start;
+  }
+
+  .tablet .hub__tiles {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: 6px 4px calc(24px + var(--safe-bottom));
+  }
+
+  .tablet .hub__tiles::-webkit-scrollbar {
+    display: none;
+  }
+}

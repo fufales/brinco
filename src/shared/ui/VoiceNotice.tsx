@@ -13,7 +13,7 @@ export function VoiceNotice() {
   return (
     <p className="voice-notice" role="status">
       {problem === 'no-voice'
-        ? 'Papás: este dispositivo no tiene una voz en inglés. Instálala en los ajustes de idioma del teléfono.'
+        ? 'Papás: este dispositivo no tiene una voz en inglés. Instálala en los ajustes de idioma del dispositivo.'
         : 'Papás: este navegador no puede hablar. Prueben con Chrome o Safari actualizados.'}
     </p>
   );

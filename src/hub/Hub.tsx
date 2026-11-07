@@ -159,7 +159,7 @@ export function Hub() {
               </span>
               <span className="tile__text">
                 <strong>Instala Brinco</strong>
-                <small>Ponla en tu teléfono como una app</small>
+                <small>Ponla en tu teléfono o tablet como una app</small>
               </span>
               <span className="tile__go">
                 <NextIcon />

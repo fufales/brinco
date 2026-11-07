@@ -26,7 +26,8 @@ export default defineConfig({
         display: 'standalone',
         // Android oculta las barras del sistema; iOS no lo admite y se queda en standalone.
         display_override: ['fullscreen', 'standalone'],
-        orientation: 'portrait',
+        // Las tablets giran; en teléfonos acostados se pide girar (RotateHint).
+        orientation: 'any',
         background_color: '#6C4DF6',
         theme_color: '#6C4DF6',
         icons: [

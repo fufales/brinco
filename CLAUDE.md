@@ -21,4 +21,5 @@ Al crear o cambiar un juego:
 
 - Todo el texto para niños y papás va en español; lo que se aprende va en inglés.
 - Cada juego vive en `src/apps/<juego>/` y se registra en `src/apps/registry.ts`.
+- Todo debe verse bien en teléfono (solo vertical) y en tablet (vertical y horizontal). En horizontal, las pantallas se acomodan con reglas `.tablet` dentro de `@media (orientation: landscape)`. Para medir posiciones se usa `getBoundingClientRect` con un `ResizeObserver`, nunca CSS `zoom`.
 - Los lanzamientos se hacen desde `main` con `npm version patch|minor`.

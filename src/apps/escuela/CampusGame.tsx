@@ -84,9 +84,15 @@ function CampusRound({ topic, onRestart }: { topic: Topic; onRestart: () => void
   }, [frogAt, peopleMode]);
 
   useLayoutEffect(placeFrog, [placeFrog]);
+  // Al girar la tablet cambia el plano: se vuelve a medir cuando el cambio ya se aplicó.
   useEffect(() => {
     window.addEventListener('resize', placeFrog);
-    return () => window.removeEventListener('resize', placeFrog);
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(placeFrog);
+    if (plan.current) observer?.observe(plan.current);
+    return () => {
+      window.removeEventListener('resize', placeFrog);
+      observer?.disconnect();
+    };
   }, [placeFrog]);
 
   const later = (callback: () => void, delay: number) => {
