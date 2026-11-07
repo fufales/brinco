@@ -6,19 +6,23 @@ export const APP_VERSION = __APP_VERSION__;
 
 export type CheckResult = 'latest' | 'found' | 'failed' | 'unavailable';
 
-/** Una PWA instalada casi no navega: el navegador solo no buscaría versiones nuevas. */
-const CHECK_EVERY_MS = 5 * 60 * 1000; // antes 15 min
+/** Una PWA instalada casi no navega: el navegador solo no buscaría versiones nuevas.
+ *  Reducido de 15 min → 5 min. Ahora 60 s para que el update sea responsivo.
+ */
+const CHECK_EVERY_MS = 60 * 1000; // 60 s
+const BURST_CHECKS = [500, 3000, 10000]; // ms: checks extra al arrancar
 const VERSION_KEY = 'brinco:version';
 
 let registration: ServiceWorkerRegistration | undefined;
 let updatedVersion: string | null = null;
-let applyUpdate = () => {};
+let applyUpdate: (() => void) | null = null;
 
-const gate = createUpdateGate(() => applyUpdate());
+const gate = createUpdateGate(() => {
+  if (applyUpdate) applyUpdate();
+});
 
 function checkSilently() {
   if (!registration || registration.installing || !navigator.onLine) return;
-  // Un fallo de red aquí no importa: se intentará en la siguiente búsqueda.
   registration.update()
     .then(() => {
       if (registration?.waiting || registration?.installing) {
@@ -40,6 +44,8 @@ function rememberVersion() {
   }
 }
 
+/** Inicia el sistema de actualizaciones: registro del SW, check automático cada 60 s,
+ *  burst al arrancar, check al volver a la app. */
 export function startUpdates() {
   rememberVersion();
 
@@ -51,10 +57,17 @@ export function startUpdates() {
       if (!current) return;
       // Primer check inmediato al abrir la app
       checkSilently();
-      window.setInterval(checkSilently, CHECK_EVERY_MS);
+      // Burst inicial: checks extra para detectar updates publicados justo antes
+      for (const delay of BURST_CHECKS) {
+        window.setTimeout(checkSilently, delay);
+      }
+      // Intervalo continuo cada 60 s
+      const timerId = window.setInterval(checkSilently, CHECK_EVERY_MS);
+      // Check cada vez que la app pasa a primer plano
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') checkSilently();
       });
+      return () => window.clearInterval(timerId);
     },
   });
 
@@ -67,6 +80,7 @@ export function justUpdatedTo(): string | null {
   return updatedVersion;
 }
 
+/** Busca una actualización manualmente. */
 export async function checkForUpdate(): Promise<CheckResult> {
   if (!registration) return 'unavailable';
   try {
@@ -75,6 +89,14 @@ export async function checkForUpdate(): Promise<CheckResult> {
     return 'failed';
   }
   return registration.installing || registration.waiting ? 'found' : 'latest';
+}
+
+/** Fuerza la activación de la versión en espera (skipWaiting + recarga automática).
+ *  Retorna true si había un update pendiente, false si no. */
+export function triggerUpdate(): boolean {
+  if (!registration?.waiting) return false;
+  if (applyUpdate) applyUpdate();
+  return true;
 }
 
 /** Para pantallas que no se deben interrumpir: la actualización espera a que se cierren. */
