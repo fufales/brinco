@@ -1,5 +1,6 @@
 import { lazy, type ComponentType } from 'react';
 import type { State } from '../shared/progress';
+import { AmigosIcon, amigosSummary } from './amigos/summary';
 import { escuelaSummary, SchoolIcon } from './escuela/summary';
 import { NumerosIcon, numerosSummary } from './numeros/summary';
 import { PalabrasIcon, palabrasSummary } from './palabras/summary';
@@ -45,12 +46,23 @@ export const APPS: MiniApp[] = [
   {
     id: 'escuela',
     title: 'Brincaescuela',
-    tagline: 'La escuela en inglés',
+    tagline: 'Lugares de la escuela en inglés',
     path: '/escuela',
     color: '#3d7bf5',
     edge: '#2357c9',
     Icon: SchoolIcon,
     Component: lazy(() => import('./escuela/EscuelaApp')),
     summary: escuelaSummary,
+  },
+  {
+    id: 'amigos',
+    title: 'Brincamigos',
+    tagline: 'La gente de la escuela en inglés',
+    path: '/amigos',
+    color: '#ff5ca8',
+    edge: '#d33a84',
+    Icon: AmigosIcon,
+    Component: lazy(() => import('./amigos/AmigosApp')),
+    summary: amigosSummary,
   },
 ];

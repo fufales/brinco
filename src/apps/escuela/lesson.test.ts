@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildSchoolLesson, exerciseItems, retrySchoolExercise, type SchoolExercise } from './lesson';
-import { PEOPLE } from './people';
+import { PEOPLE } from '../amigos/people';
 import { PLACES } from './places';
 
 function seeded(seed: number) {

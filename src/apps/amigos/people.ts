@@ -18,9 +18,14 @@ export const PEOPLE: Person[] = [
   { id: 'secretary', en: 'secretary', es: 'secretario', area: 'office' },
 ];
 
-/** Dónde se guardan las estrellas de la lección y del juego ¿Quién es? */
+/**
+ * Dónde se guardan las estrellas de la lección y del juego ¿Quién es?
+ * Conservan el nombre de cuando vivían en Brincaescuela para no perder lo ganado.
+ */
 export const PEOPLE_LESSON_KEY = 'escuela-personas';
 export const WHO_KEY = 'escuela-quien';
+
+export const AMIGOS_COLORS = { color: '#ff5ca8', edge: '#d33a84' };
 
 /** Lo que dice la voz en ¿Quién es? */
 export function findText(person: LessonItem): string {

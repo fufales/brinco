@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { NUMBERS } from '../numeros/numbers';
 import { WORDS } from '../palabras/words';
-import { PEOPLE } from './people';
+import { PEOPLE } from '../amigos/people';
 import { directions, PLACES } from './places';
 
 describe('places', () => {

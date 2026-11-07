@@ -1,17 +1,17 @@
 import type { ComponentType } from 'react';
 import type { LessonItem } from '../../shared/lesson/types';
 import { PlaceArt } from './illustrations';
-import { PEOPLE, PEOPLE_LESSON_KEY, WHO_KEY, findText } from './people';
-import { PersonArt } from './peopleArt';
-import { directions, LESSON_KEY, MAP_KEY, PLACES } from './places';
+import { directions, LESSON_KEY, MAP_KEY, PLACES, SCHOOL_COLORS } from './places';
 
-/** Lo que cambia entre aprender lugares y aprender personas; las pantallas son las mismas. */
+/**
+ * Lo que cambia entre un juego de la escuela y otro. Brincaescuela (lugares) y
+ * Brincamigos (personas) comparten las mismas pantallas con distinto tema.
+ */
 export interface Topic {
   id: 'places' | 'people';
   items: LessonItem[];
   Art: ComponentType<{ id: string; play?: number }>;
-  /** Prefijo de las rutas dentro de Brincaescuela. */
-  base: string;
+  colors: { color: string; edge: string };
   lessonKey: string;
   gameKey: string;
   readCount: number;
@@ -29,7 +29,7 @@ export const PLACES_TOPIC: Topic = {
   id: 'places',
   items: PLACES,
   Art: PlaceArt,
-  base: '',
+  colors: SCHOOL_COLORS,
   lessonKey: LESSON_KEY,
   gameKey: MAP_KEY,
   readCount: 3,
@@ -39,20 +39,4 @@ export const PLACES_TOPIC: Topic = {
   matchTitle: 'Une cada lugar con su nombre',
   say: directions,
   sayVerb: 'Go to the',
-};
-
-export const PEOPLE_TOPIC: Topic = {
-  id: 'people',
-  items: PEOPLE,
-  Art: PersonArt,
-  base: '/personas',
-  lessonKey: PEOPLE_LESSON_KEY,
-  gameKey: WHO_KEY,
-  readCount: 2,
-  discoverTitle: 'Personas de la escuela',
-  discoverHint: 'Toca a alguien para oír quién es',
-  pickWhat: 'a la persona',
-  matchTitle: 'Une cada persona con su nombre',
-  say: findText,
-  sayVerb: 'Find the',
 };

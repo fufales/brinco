@@ -2,7 +2,6 @@ import { useLocation } from 'wouter';
 import { LessonRunner } from '../../../shared/lesson/LessonRunner';
 import { MatchBoard } from '../../../shared/lesson/MatchBoard';
 import { buildSchoolLesson, exerciseItems, retrySchoolExercise } from '../lesson';
-import { SCHOOL_COLORS } from '../places';
 import { SchoolChoice } from '../SchoolChoice';
 import type { Topic } from '../topics';
 
@@ -12,7 +11,7 @@ export function LessonScreen({ topic }: { topic: Topic }) {
   return (
     <LessonRunner
       progressKey={topic.lessonKey}
-      accent={SCHOOL_COLORS}
+      accent={topic.colors}
       build={() => buildSchoolLesson(topic.items, topic.readCount)}
       itemsOf={exerciseItems}
       retry={retrySchoolExercise}

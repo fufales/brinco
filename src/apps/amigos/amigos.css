@@ -1,0 +1,16 @@
+/* Portada de Brincamigos: rosa, para distinguirla de Brincaescuela. */
+.school--people {
+  background: linear-gradient(180deg, #ff8cc4 0%, #ff5ca8 45%, #ffc06b 100%);
+}
+
+.school--people .school__building {
+  filter: drop-shadow(0 8px 0 rgba(150, 30, 90, 0.3));
+}
+
+.school--people .school-option {
+  box-shadow: 0 7px 0 rgba(150, 30, 90, 0.28);
+}
+
+.school--people .school-option:active {
+  box-shadow: 0 2px 0 rgba(150, 30, 90, 0.28);
+}

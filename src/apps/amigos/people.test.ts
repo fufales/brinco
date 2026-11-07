@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { NUMBERS } from '../numeros/numbers';
 import { WORDS } from '../palabras/words';
 import { findText, PEOPLE } from './people';
-import { PLACES } from './places';
+import { PLACES } from '../escuela/places';
 
 describe('people', () => {
   it('has the seven requested people', () => {

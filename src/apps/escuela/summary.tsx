@@ -1,12 +1,9 @@
 import { isMastered, type State } from '../../shared/progress';
-import { PEOPLE } from './people';
 import { PLACES } from './places';
 
-const ALL = [...PLACES, ...PEOPLE];
-
 export function escuelaSummary(state: State) {
-  const mastered = ALL.filter((item) => isMastered(state, item.id)).length;
-  return { label: `${mastered} de ${ALL.length} lugares y personas`, value: mastered / ALL.length };
+  const mastered = PLACES.filter((place) => isMastered(state, place.id)).length;
+  return { label: `${mastered} de ${PLACES.length} lugares`, value: mastered / PLACES.length };
 }
 
 /** Una escuelita con bandera: ícono de la tarjeta y dibujo de la portada. */

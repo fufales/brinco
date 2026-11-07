@@ -13,7 +13,7 @@ import { Sheet } from '../../shared/ui/Sheet';
 import { CloseIcon, SpeakerIcon } from '../../shared/ui/icons';
 import { useBlockUpdates } from '../../shared/updates';
 import { PlaceArt } from './illustrations';
-import { PEOPLE, type CampusArea } from './people';
+import { PEOPLE, type CampusArea } from '../amigos/people';
 import type { Topic } from './topics';
 
 /** Dónde está cada lugar en el plano; la entrada, abajo, es donde empieza la rana. */
