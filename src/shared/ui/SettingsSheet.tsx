@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'wouter';
 import { resetProgress, updateSettings, useProgress } from '../progress';
 import { NORMAL_RATE, speak } from '../speech';
 import { APP_VERSION, checkForUpdate, triggerUpdate, type CheckResult } from '../updates';
@@ -78,6 +79,7 @@ export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () =>
   const { settings } = useProgress();
   const voices = useEnglishVoices();
   const [confirmReset, setConfirmReset] = useState(false);
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     if (!open) setConfirmReset(false);
@@ -144,6 +146,16 @@ export function SettingsSheet({ open, onClose }: { open: boolean; onClose: () =>
         }}
       >
         {confirmReset ? '¿Seguro? Toca otra vez' : 'Borrar el progreso'}
+      </button>
+
+      <button
+        className="btn btn--white btn--wide"
+        onClick={() => {
+          onClose();
+          navigate('~/instalar');
+        }}
+      >
+        Cómo instalar en el teléfono
       </button>
 
       <VersionRow />

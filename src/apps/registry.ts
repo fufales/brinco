@@ -1,6 +1,7 @@
 import { lazy, type ComponentType } from 'react';
 import type { State } from '../shared/progress';
 import { AmigosIcon, amigosSummary } from './amigos/summary';
+import { DondeIcon, dondeSummary } from './donde/summary';
 import { escuelaSummary, SchoolIcon } from './escuela/summary';
 import { NumerosIcon, numerosSummary } from './numeros/summary';
 import { PalabrasIcon, palabrasSummary } from './palabras/summary';
@@ -64,5 +65,16 @@ export const APPS: MiniApp[] = [
     Icon: AmigosIcon,
     Component: lazy(() => import('./amigos/AmigosApp')),
     summary: amigosSummary,
+  },
+  {
+    id: 'donde',
+    title: 'Brincadónde',
+    tagline: 'Next to, in front of, between',
+    path: '/donde',
+    color: '#8a5cf6',
+    edge: '#6a3fd8',
+    Icon: DondeIcon,
+    Component: lazy(() => import('./donde/DondeApp')),
+    summary: dondeSummary,
   },
 ];

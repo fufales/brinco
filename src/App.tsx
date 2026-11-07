@@ -4,6 +4,7 @@ import { Redirect, Route, Router, Switch } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 import { APPS } from './apps/registry';
 import { Hub } from './hub/Hub';
+import { InstallPage } from './install/InstallPage';
 import { RotateHint } from './shared/ui/RotateHint';
 import { UpdateToast } from './shared/ui/UpdateToast';
 
@@ -17,6 +18,7 @@ export function App() {
           <Suspense fallback={null}>
             <Switch>
               <Route path="/" component={Hub} />
+              <Route path="/instalar" component={InstallPage} />
               {APPS.map((app) => (
                 <Route key={app.id} path={app.path} nest>
                   <app.Component />

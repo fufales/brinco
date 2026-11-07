@@ -70,6 +70,27 @@ Practica en inglés siete personas de la escuela: principal (directora), cook (c
 
 Brincaescuela y Brincamigos comparten las pantallas de `src/apps/escuela/`; cada uno pasa su propio tema (`topics.ts` y `amigos/topic.ts`).
 
+## Brincadónde
+
+Practica tres posiciones en inglés con la rana: **next to** (al lado de), **in front of** (delante de) y **between** (entre). Los objetos de referencia son dibujos de Brincapalabras, así que las frases también repasan vocabulario: *"The frog is between the van and the vase."*
+
+<p align="center">
+  <img src="docs/donde-inicio.jpg" alt="Portada de Brincadónde con sus tres actividades" width="200" />
+  <img src="docs/donde-mover.jpg" alt="Juego de arrastrar a la rana a su lugar" width="200" />
+</p>
+
+- **Descubre:** al tocar cada tarjeta, la rana brinca a esa posición y la voz dice la frase.
+- **Lección:** escuchar o leer la frase y elegir la escena correcta, y unir cada escena con su frase.
+- **¡Mueve a la rana!:** la voz dice, por ejemplo, "Put the frog in front of the vase!" y el niño arrastra a la rana o toca la hojita donde va.
+
+## Instalarla en el teléfono
+
+La página **Instala Brinco** (`#/instalar`) explica en español, paso a paso, cómo instalarla en iPhone (Safari) y en Android (Chrome). Abre sola la pestaña del teléfono que se usa y, en Android, ofrece un botón para instalar directo cuando el navegador lo permite. Se llega desde una tarjeta del inicio, que desaparece una vez instalada, y desde **Ajustes**.
+
+<p align="center">
+  <img src="docs/instalar.jpg" alt="Pasos para instalar Brinco en el teléfono" width="200" />
+</p>
+
 ## Publicarla en un servidor
 
 Es un sitio estático, así que no necesita base de datos ni configuración.

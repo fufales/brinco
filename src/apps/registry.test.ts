@@ -10,6 +10,6 @@ describe('registry', () => {
   });
 
   it('keeps school places and school people as separate games', () => {
-    expect(APPS.map((app) => app.title)).toEqual(['Brincapalabras', 'Brincanúmeros', 'Brincaescuela', 'Brincamigos']);
+    expect(APPS.map((app) => app.title)).toEqual(['Brincapalabras', 'Brincanúmeros', 'Brincaescuela', 'Brincamigos', 'Brincadónde']);
   });
 });

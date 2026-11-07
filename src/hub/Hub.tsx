@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLocation } from 'wouter';
 import { APPS } from '../apps/registry';
+import { isInstalled } from '../install/platform';
 import { totalStars, useProgress } from '../shared/progress';
 import { sfx } from '../shared/sfx';
 import { speak } from '../shared/speech';
@@ -35,6 +36,7 @@ export function Hub() {
   const state = useProgress();
   const [, navigate] = useLocation();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [installed] = useState(isInstalled);
   const [greeting, setGreeting] = useState(false);
   const [hops, setHops] = useState(0);
   const greetingTimer = useRef(0);
@@ -140,6 +142,30 @@ export function Hub() {
               </motion.button>
             );
           })}
+
+          {!installed && (
+            <button
+              className="tile tile--install"
+              onClick={() => {
+                sfx.tap();
+                navigate('/instalar');
+              }}
+            >
+              <span className="tile__icon tile__icon--install">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x={6.5} y={2.5} width={11} height={19} rx={2.5} fill="#fff" stroke="currentColor" strokeWidth={2} />
+                  <path d="M12 7 V14 M9 11 L12 14 L15 11" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <span className="tile__text">
+                <strong>Instala Brinco</strong>
+                <small>Ponla en tu teléfono como una app</small>
+              </span>
+              <span className="tile__go">
+                <NextIcon />
+              </span>
+            </button>
+          )}
 
           <div className="tile tile--soon">
             <span className="tile__icon tile__icon--soon">

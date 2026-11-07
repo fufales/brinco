@@ -232,3 +232,24 @@ button.tile:active {
   background: rgba(255, 255, 255, 0.35);
   font-size: 30px;
 }
+
+/* Tarjeta que lleva a la página de instalación; solo aparece si Brinco aún no está instalada. */
+.tile--install {
+  background: #fff8d6;
+  box-shadow: 0 8px 0 #e9c95a;
+}
+
+button.tile--install:active {
+  box-shadow: 0 2px 0 #e9c95a;
+}
+
+.tile__icon--install {
+  background: var(--sun);
+  box-shadow: 0 5px 0 var(--sun-dark);
+  color: var(--ink);
+}
+
+.tile__icon--install svg {
+  width: 100%;
+  height: 100%;
+}
